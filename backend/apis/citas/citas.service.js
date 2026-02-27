@@ -1,4 +1,4 @@
-const { obtenerCitasRepository, obtenerCitaPorIdRepository, crearCitaRepository, actualizarCitaRepository, eliminarCitaRepository } = require("./citas.repository")
+const { obtenerCitasRepository, obtenerCitaPorIdRepository, crearCitaRepository, actualizarCitaRepository, eliminarCitaRepository, obtenerCitasDelDia } = require("./citas.repository")
 
 async function obtenerCitas() {
     return await obtenerCitasRepository();
@@ -68,10 +68,15 @@ async function eliminarCita(id) {
     return cita[0];
 }
 
+async function obtenerCitasDelDiaService() {
+  return await obtenerCitasDelDia();
+}
+
 module.exports = {
-    obtenerCitas: obtenerCitas,
-    obtenerCitaPorId: obtenerCitaPorId,
-    crearCita: crearCita,
-    actualizarCita: actualizarCita,
-    eliminarCita: eliminarCita,
+  obtenerCitas: obtenerCitas,
+  obtenerCitaPorId: obtenerCitaPorId,
+  crearCita: crearCita,
+  actualizarCita: actualizarCita,
+  eliminarCita: eliminarCita,
+  obtenerCitasDelDiaService: obtenerCitasDelDiaService,
 };

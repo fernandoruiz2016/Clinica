@@ -1,4 +1,4 @@
-const { obtenerCitas, obtenerCitaPorId, crearCita, actualizarCita, eliminarCita } = require("./citas.service");
+const { obtenerCitas, obtenerCitaPorId, crearCita, actualizarCita, eliminarCita, obtenerCitasDelDiaService } = require("./citas.service");
 
 async function obtenerCitasController(req, res) {
   try {
@@ -141,10 +141,20 @@ async function eliminarCitaController(req, res) {
   }
 }
 
+async function obtenerCitasDelDiaController(req, res) {
+  try {
+    const data = await obtenerCitasDelDiaService();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener citas del día" });
+  }
+}
+
 module.exports = {
   obtenerCitasController: obtenerCitasController,
   obtenerCitasPorIdController: obtenerCitasPorIdController,
   crearCitaController: crearCitaController,
   actualizarCitaController: actualizarCitaController,
   eliminarCitaController: eliminarCitaController,
+  obtenerCitasDelDiaController: obtenerCitasDelDiaController,
 };

@@ -42,10 +42,32 @@ async function eliminarCitaRepository(id) {
     return resultadoDeConsulta.rows;
 }
 
+async function obtenerCitasDelDia() {
+  const result = await db.query(`
+    SELECT 
+    c.id_cita,
+    DATE(c.fecha) AS fecha,
+    c.hora,
+    c.estado,
+    p.nombre AS paciente,
+    m.nombre AS medico,
+    e.nombre AS especialidad
+    FROM cita c
+    JOIN paciente p ON c.id_paciente = p.id_paciente
+    JOIN medico m ON c.id_medico = m.id_medico
+    JOIN especialidad e ON m.id_especialidad = e.id_especialidad
+    WHERE DATE(c.fecha) = CURRENT_DATE
+    ORDER BY c.hora ASC;
+  `);
+
+  return result.rows;
+}
+
 module.exports = {
     obtenerCitasRepository: obtenerCitasRepository,
     obtenerCitaPorIdRepository: obtenerCitaPorIdRepository,
     crearCitaRepository: crearCitaRepository,
     actualizarCitaRepository: actualizarCitaRepository,
     eliminarCitaRepository: eliminarCitaRepository,
+    obtenerCitasDelDia: obtenerCitasDelDia,
 };
