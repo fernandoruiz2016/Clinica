@@ -1,0 +1,22 @@
+<table class="tabla">
+  <thead>
+    <tr>
+      <th>Hora</th>
+      <th>Paciente</th>
+      <th>Médico</th>
+      <th>Especialidad</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (cita of citas; track cita.id_cita) {
+      <tr>
+        <td>{{ cita.hora }}</td>
+        <td>{{ cita.paciente }}</td>
+        <td>{{ cita.medico }}</td>
+        <td>{{ cita.especialidad }}</td>
+        <td>{{ cita.estado }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

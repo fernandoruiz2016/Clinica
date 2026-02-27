@@ -1,0 +1,31 @@
+.container-fluid {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+}
+
+.body {
+    display: flex;
+    flex-direction: row;
+    flex: 1; 
+}
+
+app-nav-bar {
+    width: 200px;
+}
+
+.content {
+    flex: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .body {
+        display: flex;
+    }
+}

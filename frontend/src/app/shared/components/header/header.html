@@ -1,0 +1,16 @@
+<img src="logo.png" alt="Logo">
+<h1>Clínica Lima del Mar</h1>
+<button class="hamburger" [class.active]="isOpen" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Sidebar -->
+<nav class="sidebar" [class.open]="isOpen">
+    <button type="button" class="btn btn-outline-light btn-cerrar" (click)="toggleMenu()">X</button>
+    <a routerLink="/inicio">Dashboard</a>
+    <a routerLink="/ventas">Pacientes</a>
+    <a routerLink="/clientes">Médicos</a>
+    <a routerLink="/clientes">Reportes</a>
+</nav>

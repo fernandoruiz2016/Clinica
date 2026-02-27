@@ -1,0 +1,15 @@
+<div class="home">
+<section class="resumen">
+    <h2>Resumen del día</h2>
+    <div class="cards">
+        <app-home-card [title]="'Citas de hoy'" [body]="citas" [cardColor]="'blue'"></app-home-card>
+        <app-home-card [title]="'Total Citas'" [body]="totalCitas" [cardColor]="'#E38636'"></app-home-card>
+                <app-home-card [title]="'Total Pacientes'" [body]="totalPacientes" [cardColor]="'#00DC1F'"></app-home-card>
+    </div>
+</section>
+<section class="today">
+    <h2>Citas programadas para hoy</h2>
+    <app-table></app-table>
+</section>
+</div>
+
