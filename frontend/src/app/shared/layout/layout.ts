@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavBar } from '../components/nav-bar/nav-bar'; 
+import { NavBar } from '../components/nav-bar/nav-bar';
 import { RouterOutlet } from '@angular/router';
-import { Footer } from '../components/footer/footer'; 
-import { Header } from '../components/header/header'; 
+import { Footer } from '../components/footer/footer';
+import { Header } from '../components/header/header';
 
 @Component({
   selector: 'app-layout',

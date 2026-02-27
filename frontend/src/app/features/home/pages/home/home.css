@@ -1,4 +1,5 @@
 .home {
+  box-sizing: content-box;
   padding: 20px;
 }
 

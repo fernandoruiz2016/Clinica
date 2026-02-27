@@ -1,22 +1,24 @@
-<table class="tabla">
-  <thead>
-    <tr>
-      <th>Hora</th>
-      <th>Paciente</th>
-      <th>Médico</th>
-      <th>Especialidad</th>
-      <th>Estado</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (cita of citas; track cita.id_cita) {
+<div class="table-container">
+  <table class="tabla">
+    <thead>
       <tr>
-        <td>{{ cita.hora }}</td>
-        <td>{{ cita.paciente }}</td>
-        <td>{{ cita.medico }}</td>
-        <td>{{ cita.especialidad }}</td>
-        <td>{{ cita.estado }}</td>
+        <th>Hora</th>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Especialidad</th>
+        <th>Estado</th>
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (cita of citas; track cita.id_cita) {
+        <tr>
+          <td>{{ cita.hora }}</td>
+          <td>{{ cita.paciente }}</td>
+          <td>{{ cita.medico }}</td>
+          <td>{{ cita.especialidad }}</td>
+          <td>{{ cita.estado }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

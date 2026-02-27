@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-table',
   imports: [CommonModule],
   templateUrl: './table.html',
-  styleUrl: './table.css',
+  styleUrls: ['./table.css'],
 })
 export class TableComponent implements OnInit {
   citas: any[] = [];

@@ -35,11 +35,13 @@ img {
 }
 
 .navBar-links a {
-    margin: 0;
+    margin: 10px 0 10px;
     width: 100%;
     padding: 15px;
     box-sizing: border-box;
     text-align: center;
+    text-decoration: none;
+    color: white;
 }
 
 .navBar-links a:hover {
