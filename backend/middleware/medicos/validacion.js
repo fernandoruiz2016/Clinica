@@ -1,12 +1,12 @@
 function validarMedico(req, res, next) {
-    const { apellido, nombre, dni, telefono, especialidad } = req.body;
+    const { apellido, nombre, dni, telefono, idEspecialidad } = req.body;
 
-    if (!apellido || !nombre || !dni || !telefono || !especialidad) {
-        return res.status(400).json({
-            error: {
-                message: "Todos los campos son obligatorios",
-            },
-        });
+    if (!apellido || !nombre || !dni || !telefono || !idEspecialidad) {
+      return res.status(400).json({
+        error: {
+          message: "Todos los campos son obligatorios",
+        },
+      });
     }
 
         if (typeof apellido !== "string") {
@@ -41,7 +41,7 @@ function validarMedico(req, res, next) {
         });
     }
 
-    if (!Number.isInteger(especialidad)) {
+    if (!Number.isInteger(idEspecialidad)) {
         return res.status(400).json({
             error: {
                 message: "La especialidad debe ser un número entero",

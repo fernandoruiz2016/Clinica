@@ -17,7 +17,7 @@ async function obtenerMedicoPorIdRepository(id) {
 
 async function crearMedicoRepository(apellido, nombre, dni, telefono, idEspecialidad) {
     const resultadoDeConsulta = await db.query(
-        "INSERT INTO medico (apellido, nombre, dni, telefono, id_especialidad) VALUES ($1, $2, $3, $4) RETURNING *",
+        "INSERT INTO medico (apellido, nombre, dni, telefono, id_especialidad) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [apellido, nombre, dni, telefono, idEspecialidad]
     );
 

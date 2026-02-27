@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS Paciente (
     Telefono varchar(15) NOT NULL
 );
 
-CREATE TABLE Especialidad (
+CREATE TABLE IF NOT EXISTS Especialidad (
     Id_Especialidad SERIAL PRIMARY KEY,
     Nombre VARCHAR(50) NOT NULL
 );

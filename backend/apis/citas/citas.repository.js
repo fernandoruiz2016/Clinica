@@ -17,7 +17,7 @@ async function obtenerCitaPorIdRepository(id) {
 
 async function crearCitaRepository(idPaciente, idMedico, estado, fecha, hora) {
     const resultadoDeConsulta = await db.query(
-        "INSERT INTO cita (id_paciente, id_medico, estado, fecha, hora) VALUES ($1, $2, $3, $4) RETURNING *",
+        "INSERT INTO cita (id_paciente, id_medico, estado, fecha, hora) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [idPaciente, idMedico, estado, fecha, hora]
     );
 

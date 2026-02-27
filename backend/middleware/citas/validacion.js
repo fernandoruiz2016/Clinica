@@ -40,28 +40,29 @@ function validarCita(req, res, next) {
         });
     }
 
-    // Validar que sea fecha real
-    const fechaObj = new Date(fecha);
-    if (isNaN(fechaObj.getTime())) {
-        return res.status(400).json({
-            error: { message: "La fecha no es válida" }
-        });
+    const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+    if (!regexHora.test(hora)) {
+      return res.status(400).json({
+        error: { message: "La hora debe tener formato HH:MM (24 horas)" },
+      });
     }
 
-    const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
-    if (!regexHora.test(hora)) {
-        return res.status(400).json({
-            error: { message: "La hora debe tener formato HH:MM (24 horas)" }
-        });
+    const fechaHora = new Date(`${fecha}T${hora}:00`);
+
+    if (isNaN(fechaHora.getTime())) {
+      return res.status(400).json({
+        error: { message: "La fecha u hora no es válida" },
+      });
     }
 
     const ahora = new Date();
-    if (fechaObj < ahora) {
-        return res.status(400).json({
-            error: { message: "No se puede registrar una cita en el pasado" }
-        });
-    }
 
+    if (fechaHora <= ahora) {
+      return res.status(400).json({
+        error: { message: "No se puede registrar una cita en el pasado" },
+      });
+    }
     next();
 }
 
