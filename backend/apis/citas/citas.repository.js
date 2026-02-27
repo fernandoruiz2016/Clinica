@@ -46,7 +46,7 @@ async function obtenerCitasDelDia() {
   const result = await db.query(`
     SELECT 
     c.id_cita,
-    DATE(c.fecha) AS fecha,
+    TO_CHAR(c.fecha, 'YYYY-MM-DD') AS fecha,
     c.hora,
     c.estado,
     p.nombre AS paciente,
@@ -63,11 +63,59 @@ async function obtenerCitasDelDia() {
   return result.rows;
 }
 
+async function obtenerCitasFiltradas(filtros = {}) {
+  const { dni, fecha, estado } = filtros;
+
+  // 1. Base de la consulta
+  let query = `
+    SELECT 
+      c.id_cita,
+      TO_CHAR(c.fecha, 'YYYY-MM-DD') AS fecha,
+      c.hora,
+      c.estado,
+      p.nombre AS paciente,
+      m.nombre AS medico,
+      e.nombre AS especialidad
+    FROM cita c
+    JOIN paciente p ON c.id_paciente = p.id_paciente
+    JOIN medico m ON c.id_medico = m.id_medico
+    JOIN especialidad e ON m.id_especialidad = e.id_especialidad
+    WHERE 1=1
+  `;
+
+  const values = [];
+  let count = 1;
+
+  // 2. Aplicar filtros dinámicos
+  if (fecha) {
+    query += ` AND DATE(c.fecha) = $${count++}`;
+    values.push(fecha);
+  }
+
+  if (dni) {
+    query += ` AND p.dni = $${count++}`;
+    values.push(dni);
+  }
+
+  if (estado && estado !== "") {
+    query += ` AND c.estado = $${count++}`;
+    values.push(estado);
+  }
+
+  // 3. Ordenar
+  query += ` ORDER BY c.fecha DESC, c.hora ASC;`;
+
+  const result = await db.query(query, values);
+  return result.rows;
+}
+
+
 module.exports = {
-    obtenerCitasRepository: obtenerCitasRepository,
-    obtenerCitaPorIdRepository: obtenerCitaPorIdRepository,
-    crearCitaRepository: crearCitaRepository,
-    actualizarCitaRepository: actualizarCitaRepository,
-    eliminarCitaRepository: eliminarCitaRepository,
-    obtenerCitasDelDia: obtenerCitasDelDia,
+  obtenerCitasRepository: obtenerCitasRepository,
+  obtenerCitaPorIdRepository: obtenerCitaPorIdRepository,
+  crearCitaRepository: crearCitaRepository,
+  actualizarCitaRepository: actualizarCitaRepository,
+  eliminarCitaRepository: eliminarCitaRepository,
+  obtenerCitasDelDia: obtenerCitasDelDia,
+  obtenerCitasFiltradas: obtenerCitasFiltradas,
 };

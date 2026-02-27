@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const {validarCita} = require("../../middleware/citas/validacion")
-const { obtenerCitasController, obtenerCitasPorIdController, crearCitaController,actualizarCitaController, eliminarCitaController, obtenerCitasDelDiaController } = require("./citas.controller")
+const { obtenerCitasController, obtenerCitasPorIdController, crearCitaController,actualizarCitaController, eliminarCitaController, obtenerCitasDelDiaController, obtenerCitasFiltradasController } = require("./citas.controller")
 
 // Obtener todos los citas
 router.get("/", obtenerCitasController);
 
 router.get("/hoy", obtenerCitasDelDiaController);
+
+router.get("/buscar", obtenerCitasFiltradasController);
 
 // Obtener un cita por ID
 router.get("/:id", obtenerCitasPorIdController);

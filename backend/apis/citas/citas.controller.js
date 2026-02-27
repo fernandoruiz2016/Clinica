@@ -1,4 +1,12 @@
-const { obtenerCitas, obtenerCitaPorId, crearCita, actualizarCita, eliminarCita, obtenerCitasDelDiaService } = require("./citas.service");
+const {
+  obtenerCitas,
+  obtenerCitaPorId,
+  crearCita,
+  actualizarCita,
+  eliminarCita,
+  obtenerCitasDelDiaService,
+  obtenerCitasFiltradasService,
+} = require("./citas.service");
 
 async function obtenerCitasController(req, res) {
   try {
@@ -79,7 +87,14 @@ async function actualizarCitaController(req, res) {
   try {
     const { id } = req.params;
     const { idPaciente, idMedico, estado, fecha, hora } = req.body;
-    const cita = await actualizarCita(idPaciente, idMedico, estado, fecha, hora, id)
+    const cita = await actualizarCita(
+      idPaciente,
+      idMedico,
+      estado,
+      fecha,
+      hora,
+      id,
+    );
 
     if (cita.error) {
       const { codigo, mensaje, estado } = cita.error;
@@ -150,6 +165,27 @@ async function obtenerCitasDelDiaController(req, res) {
   }
 }
 
+async function obtenerCitasFiltradasController(req, res) {
+  try {
+    const { dni, fecha, estado } = req.query;
+
+    const citas = await obtenerCitasFiltradasService({
+      dni,
+      fecha,
+      estado,
+    });
+
+    if (citas.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    res.json(citas);
+  } catch (error) {
+    console.error("Error en getCitasFiltradas:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
 module.exports = {
   obtenerCitasController: obtenerCitasController,
   obtenerCitasPorIdController: obtenerCitasPorIdController,
@@ -157,4 +193,5 @@ module.exports = {
   actualizarCitaController: actualizarCitaController,
   eliminarCitaController: eliminarCitaController,
   obtenerCitasDelDiaController: obtenerCitasDelDiaController,
+  obtenerCitasFiltradasController: obtenerCitasFiltradasController,
 };

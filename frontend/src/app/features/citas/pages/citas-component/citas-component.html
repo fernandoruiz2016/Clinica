@@ -1,1 +1,70 @@
-<p>citas-component works!</p>
+<div class="citas-container">
+  <div class="subtitle">
+    <h2>Gestión de Citas</h2>
+    <a routerLink="citas" routerLinkActive="active">+ Crear cita</a>
+  </div>
+
+  <div class="filter-wrapper">
+    <h3>Buscar por:</h3>
+    <form class="filter-form" (ngSubmit)="onFiltrar()">
+      <div class="form-group">
+        <label>DNI</label>
+        <input type="text" name="dni" [(ngModel)]="filtros.dni" placeholder="Ej. 12345678" />
+      </div>
+
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" name="fecha" [(ngModel)]="filtros.fecha" />
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select name="estado" [(ngModel)]="filtros.estado">
+          <option value="">Todos</option>
+          <option value="Programada">Programada</option>
+          <option value="Atendida">Atendida</option>
+          <option value="Cancelada">Cancelada</option>
+          <option value="No asistio">No asistio</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit">Filtrar</button>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Especialidad</th>
+          <th>Médico</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cita of citas; track $index) {
+          <tr>
+            <td>{{ cita.paciente }}</td>
+            <td>{{ cita.fecha }}</td>
+            <td>{{ cita.hora }}</td>
+            <td>{{ cita.especialidad }}</td>
+            <td>{{ cita.medico }}</td>
+            <td>{{ cita.estado }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-edit" title="Editar">Editar</button>
+                <button class="btn-delete" (click)="eliminarCita(cita.id_cita)" title="Eliminar">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
