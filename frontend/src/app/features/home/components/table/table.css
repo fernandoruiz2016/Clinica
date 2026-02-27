@@ -49,3 +49,14 @@ tbody td:last-child {
   font-weight: 600;
   color: #7F00E0;
 }
+
+@media screen and (max-width: 769px) {
+  table {
+    font-size: 12px;
+  }
+
+  thead th, tbody td {
+    padding: 5px;
+  }
+
+}

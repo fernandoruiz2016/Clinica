@@ -5,11 +5,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class CitaService {
-  private apiUrl = 'http://http://localhost:3000/citas/hoy';
+  private apiUrl = 'http://localhost:3000/citas/hoy';
 
   constructor(private http: HttpClient) {}
 
   obtenerCitasHoy() {
-    return this.http.get<any[]>('http://localhost:3000/citas/hoy');
+    return this.http.get<any[]>(this.apiUrl);
   }
 }
