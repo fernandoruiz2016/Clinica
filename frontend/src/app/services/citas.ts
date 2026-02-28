@@ -19,6 +19,15 @@ export class CitaService {
     return this.http.get<any[]>(`${this.apiUrl}/hoy`);
   }
 
+  // Obtener una cita específica para llenar el formulario
+  obtenerCitaPorId(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  // Enviar los cambios (PUT o PATCH según tu backend)
+  actualizarCita(id: number, cita: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, cita);
+  }
   filtrarCitas(filtros: any): Observable<any[]> {
     let params = new HttpParams();
 

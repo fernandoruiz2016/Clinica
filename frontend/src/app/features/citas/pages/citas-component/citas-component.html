@@ -56,7 +56,9 @@
             <td>{{ cita.estado }}</td>
             <td>
               <div class="action-buttons">
-                <button class="btn-edit" title="Editar">Editar</button>
+                <button class="btn-edit" title="Editar" [routerLink]="['/citas/editar', cita.id_cita]">
+                  Editar
+                </button>
                 <button class="btn-delete" (click)="eliminarCita(cita.id_cita)" title="Eliminar">
                   Eliminar
                 </button>
