@@ -10,6 +10,11 @@ export class CitaService {
 
   constructor(private http: HttpClient) {}
 
+  crearCita(cita: any): Observable<any> {
+    // Realiza una petición POST al backend
+    return this.http.post<any>(this.apiUrl, cita);
+  }
+
   obtenerCitasHoy(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/hoy`);
   }
