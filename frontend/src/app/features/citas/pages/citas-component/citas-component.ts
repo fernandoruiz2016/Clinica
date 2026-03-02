@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -20,7 +20,10 @@ export class CitasComponent implements OnInit {
     estado: '',
   };
 
-  constructor(private citaService: CitaService) {}
+  constructor(
+    private citaService: CitaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.onFiltrar(); // Carga inicial obligatoria
@@ -32,6 +35,7 @@ export class CitasComponent implements OnInit {
         if (data && Array.isArray(data)) {
           this.citas = [...data]; // Reemplazo total de la referencia
           console.log('Tabla debería tener ahora:', this.citas.length, 'filas');
+          this.cdr.detectChanges();
         } else {
           this.citas = [];
         }
