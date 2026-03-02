@@ -17,12 +17,16 @@ export class CitasComponent implements OnInit {
   filtros = {
     dni: '',
     fecha: '',
+    paciente: '',
+    medico: '',
+    especialidad: '',
     estado: '',
+    pago: '',
   };
 
   constructor(
     private citaService: CitaService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {

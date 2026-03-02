@@ -18,7 +18,7 @@
         <select name="idMedico" [(ngModel)]="nuevaCita.idMedico" required>
           <option value="" disabled>Seleccione un médico</option>
           @for (m of medicos; track m.idMedico) {
-            <option [ngValue]="m.id_medico">{{ m.nombre }} - {{ m.especialidad }}</option>
+            <option [ngValue]="m.id_medico">{{ m.nombre }}</option>
           }
         </select>
       </div>

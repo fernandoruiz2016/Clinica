@@ -31,34 +31,42 @@ h2 {
 
 .filter-wrapper {
     background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    width: 100%;           /* Asegura que ocupe el ancho disponible sin salirse */
-    margin-right: 0;
+    padding: 15px 20px; /* Reducimos padding vertical */
+    margin-bottom: 15px; /* Menos espacio antes de la tabla */
+    border-radius: 8px;
 }
 
 .filter-wrapper h3 {
-    margin-top: 0;
     color: #7F00E0;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    font-size: 1rem;
 }
 
 .filter-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-end;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px 20px;
+    align-items: end;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    flex: 1;
-    min-width: 150px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+}
+
+.form-actions {
+    grid-column: 1 / -1; /* Se expande por todas las columnas (crea fila nueva) */
+    display: flex;
+    justify-content: flex-end; /* Lo mueve a la derecha */
+    padding-top: 5px; /* Pequeña separación de los inputs */
+    border-top: 1px solid #f0f0f0;
 }
 
 .form-group label {
@@ -69,12 +77,12 @@ h2 {
 
 .form-group input,
 .form-group select {
-    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
+    padding: 7px 10px;
+    font-size: 13px;
 }
 
 .form-group input:focus,
@@ -85,14 +93,13 @@ h2 {
 .btn-submit {
     background-color: #7F00E0;
     color: white;
-    padding: 10px 25px;
     border: none;
     border-radius: 5px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s;
-    height: 40px;
-    /* Alineado con los inputs */
+    height: 35px;
+    padding: 0 20px;
 }
 
 .btn-submit:hover {
@@ -246,6 +253,35 @@ tbody td:last-child {
     transform: scale(0.95);
 }
 
+/* Badge de Pago General */
+.payment-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Estado: Pagado */
+.payment-badge.pagado {
+    background-color: #e8f5e9; /* Verde muy claro */
+    color: #2e7d32;            /* Verde oscuro */
+    border: 1px solid #c8e6c9;
+}
+
+/* Estado: Pendiente */
+.payment-badge.pendiente {
+    background-color: #fff3e0; /* Naranja muy claro */
+    color: #ef6c00;            /* Naranja oscuro */
+    border: 1px solid #ffe0b2;
+}
+
+/* Pequeño ajuste para la columna de Fecha/Hora */
+td small {
+    color: #666;
+    font-weight: 500;
+}
+
 /* Ajuste para móviles */
 @media (max-width: 600px) {
     .filter-wrapper {
@@ -273,6 +309,18 @@ tbody td:last-child {
     .filter-wrapper {
         width: 90%;
         box-sizing: border-box;
+    }
+
+    .filter-form {
+        grid-template-columns: 1fr; /* Una sola columna en tablets/móviles */
+    }
+
+    .form-actions {
+        justify-content: center;
+    }
+
+    .btn-submit {
+        width: 100%; /* Botón ancho total en móviles */
     }
 
     .table-container {

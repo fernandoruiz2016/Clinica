@@ -28,12 +28,17 @@ export class CitaService {
   actualizarCita(id: number, cita: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, cita);
   }
+
   filtrarCitas(filtros: any): Observable<any[]> {
     let params = new HttpParams();
 
-    if (filtros.dni) params = params.append('dni', filtros.dni);
-    if (filtros.fecha) params = params.append('fecha', filtros.fecha);
-    if (filtros.estado) params = params.append('estado', filtros.estado);
+    if (filtros.dni) params = params.set('dni', filtros.dni);
+    if (filtros.fecha) params = params.set('fecha', filtros.fecha);
+    if (filtros.paciente) params = params.set('paciente', filtros.paciente);
+    if (filtros.medico) params = params.set('medico', filtros.medico);
+    if (filtros.especialidad) params = params.set('especialidad', filtros.especialidad);
+    if (filtros.estado) params = params.set('estado', filtros.estado);
+    if (filtros.pago) params = params.set('pago', filtros.pago);
 
     return this.http.get<any[]>(`${this.apiUrl}/buscar`, { params });
   }

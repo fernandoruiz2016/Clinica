@@ -167,12 +167,16 @@ async function obtenerCitasDelDiaController(req, res) {
 
 async function obtenerCitasFiltradasController(req, res) {
   try {
-    const { dni, fecha, estado } = req.query;
+    const { dni, fecha, estado, paciente, medico, especialidad, pago } = req.query;
 
     const citas = await obtenerCitasFiltradasService({
       dni,
       fecha,
       estado,
+      paciente,
+      medico, 
+      especialidad, 
+      pago
     });
 
     if (citas.length === 0) {

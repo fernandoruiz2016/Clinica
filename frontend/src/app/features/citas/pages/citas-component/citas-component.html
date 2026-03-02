@@ -8,7 +8,7 @@
     <h3>Buscar por:</h3>
     <form class="filter-form" (ngSubmit)="onFiltrar()">
       <div class="form-group">
-        <label>DNI</label>
+        <label>DNI Paciente</label>
         <input type="text" name="dni" [(ngModel)]="filtros.dni" placeholder="Ej. 12345678" />
       </div>
 
@@ -18,7 +18,37 @@
       </div>
 
       <div class="form-group">
-        <label>Estado</label>
+        <label>Nombre Paciente</label>
+        <input
+          type="text"
+          name="paciente"
+          [(ngModel)]="filtros.paciente"
+          placeholder="Nombre o apellido..."
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Médico</label>
+        <input
+          type="text"
+          name="medico"
+          [(ngModel)]="filtros.medico"
+          placeholder="Nombre del Dr/Dra"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Especialidad</label>
+        <input
+          type="text"
+          name="especialidad"
+          [(ngModel)]="filtros.especialidad"
+          placeholder="Ej. Pediatría"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Estado Cita</label>
         <select name="estado" [(ngModel)]="filtros.estado">
           <option value="">Todos</option>
           <option value="Programada">Programada</option>
@@ -28,7 +58,18 @@
         </select>
       </div>
 
-      <button type="submit" class="btn-submit">Filtrar</button>
+      <div class="form-group">
+        <label>Estado de Pago</label>
+        <select name="pago" [(ngModel)]="filtros.pago">
+          <option value="">Todos</option>
+          <option value="pagado">Completado</option>
+          <option value="pendiente">Pendiente</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Filtrar</button>
+      </div>
     </form>
   </div>
 
@@ -36,34 +77,55 @@
     <table class="tabla">
       <thead>
         <tr>
+          <th>DNI</th>
           <th>Paciente</th>
-          <th>Fecha</th>
-          <th>Hora</th>
-          <th>Especialidad</th>
+          <th>Fecha / Hora</th>
           <th>Médico</th>
-          <th>Estado</th>
+          <th>Especialidad</th>
+          <th>Estado Cita</th>
+          <th>Monto</th>
+          <th>Pago</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        @for (cita of citas; track $index) {
+        @for (cita of citas; track cita.id_cita) {
           <tr>
-            <td>{{ cita.paciente }}</td>
-            <td>{{ cita.fecha }}</td>
-            <td>{{ cita.hora }}</td>
-            <td>{{ cita.especialidad }}</td>
+            <td>
+              <code style="font-size: 13px">{{ cita.dni }}</code>
+            </td>
+            <td>
+              <strong>{{ cita.paciente }}</strong>
+            </td>
+            <td>
+              {{ cita.fecha }} <br />
+              <small>{{ cita.hora }}</small>
+            </td>
             <td>{{ cita.medico }}</td>
-            <td>{{ cita.estado }}</td>
+            <td>{{ cita.especialidad }}</td>
+            <td>
+              <span class="status-badge {{ cita.estado.toLowerCase().replace(' ', '-') }}">
+                {{ cita.estado }}
+              </span>
+            </td>
+            <td>{{ cita.monto ? (cita.monto | currency) : '-' }}</td>
+            <td>
+              <span class="payment-badge" [ngClass]="cita.monto ? 'pagado' : 'pendiente'">
+                {{ cita.monto ? 'Completado' : 'Pendiente' }}
+              </span>
+            </td>
             <td>
               <div class="action-buttons">
-                <button class="btn-edit" title="Editar" [routerLink]="['/citas/editar', cita.id_cita]">
+                <button class="btn-edit" [routerLink]="['/citas/editar', cita.id_cita]">
                   Editar
                 </button>
-                <button class="btn-delete" (click)="eliminarCita(cita.id_cita)" title="Eliminar">
-                  Eliminar
-                </button>
+                <button class="btn-delete" (click)="eliminarCita(cita.id_cita)">Eliminar</button>
               </div>
             </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9">No hay citas registradas</td>
           </tr>
         }
       </tbody>

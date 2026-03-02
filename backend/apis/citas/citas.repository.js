@@ -64,46 +64,69 @@ async function obtenerCitasDelDia() {
 }
 
 async function obtenerCitasFiltradas(filtros = {}) {
-  const { dni, fecha, estado } = filtros;
+  const { dni, fecha, estado, paciente, medico, especialidad, pago } = filtros;
 
-  // 1. Base de la consulta
   let query = `
     SELECT 
-      c.id_cita,
-      TO_CHAR(c.fecha, 'YYYY-MM-DD') AS fecha,
-      c.hora,
-      c.estado,
-      p.nombre AS paciente,
-      m.nombre AS medico,
-      e.nombre AS especialidad
-    FROM cita c
-    JOIN paciente p ON c.id_paciente = p.id_paciente
-    JOIN medico m ON c.id_medico = m.id_medico
-    JOIN especialidad e ON m.id_especialidad = e.id_especialidad
+      c.Id_Cita,
+      p.DNI AS dni,
+      (p.Nombre || ' ' || p.Apellido) AS paciente,
+      TO_CHAR(c.Fecha, 'YYYY-MM-DD') AS fecha,
+      c.Hora,
+      (m.Nombre || ' ' || m.Apellido) AS medico,
+      e.Nombre AS especialidad,
+      c.Estado,
+      pg.Monto
+    FROM Cita c
+    JOIN Paciente p ON c.Id_Paciente = p.Id_Paciente
+    JOIN Medico m ON c.Id_Medico = m.id_medico
+    JOIN Especialidad e ON m.Id_Especialidad = e.Id_Especialidad
+    LEFT JOIN Pago pg ON c.Id_Cita = pg.Id_Cita
     WHERE 1=1
   `;
 
   const values = [];
   let count = 1;
 
-  // 2. Aplicar filtros dinámicos
+  // Filtros originales (exactos)
   if (fecha) {
-    query += ` AND DATE(c.fecha) = $${count++}`;
+    query += ` AND c.Fecha = $${count++}`;
     values.push(fecha);
   }
 
-  if (dni) {
-    query += ` AND p.dni = $${count++}`;
-    values.push(dni);
-  }
-
-  if (estado && estado !== "") {
-    query += ` AND c.estado = $${count++}`;
+  if (estado) {
+    query += ` AND c.Estado = $${count++}`;
     values.push(estado);
   }
 
-  // 3. Ordenar
-  query += ` ORDER BY c.fecha DESC, c.hora ASC;`;
+  if (dni) {
+    query += ` AND p.DNI LIKE $${count++}`;
+    values.push(`${dni}%`);
+  }
+
+  if (paciente) {
+    query += ` AND (p.Nombre || ' ' || p.Apellido) ILIKE $${count++}`;
+    values.push(`%${paciente}%`);
+  }
+
+  if (medico) {
+    query += ` AND (m.Nombre || ' ' || m.Apellido) ILIKE $${count++}`;
+    values.push(`%${medico}%`);
+  }
+
+  if (especialidad) {
+    query += ` AND e.Nombre ILIKE $${count++}`;
+    values.push(`%${especialidad}%`);
+  }
+
+  // Lógica de pago
+  if (pago === 'pagado') {
+    query += ` AND pg.Monto IS NOT NULL`;
+  } else if (pago === 'pendiente') {
+    query += ` AND pg.Monto IS NULL`;
+  }
+
+  query += ` ORDER BY c.Fecha DESC, c.Hora ASC;`;
 
   const result = await db.query(query, values);
   return result.rows;
