@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CitaService } from '../../../../services/citas';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,10 @@ export class TableComponent implements OnInit {
     estado: '',
   };
 
-  constructor(private citaService: CitaService) {}
+  constructor(
+    private citaService: CitaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.cargarCitas(); // Carga inicial sin filtros
@@ -29,6 +32,7 @@ export class TableComponent implements OnInit {
   cargarCitas(): void {
     this.citaService.obtenerCitasHoy().subscribe((data) => {
       this.citas = data;
+      this.cdr.detectChanges();
     });
   }
 

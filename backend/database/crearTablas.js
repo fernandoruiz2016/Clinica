@@ -41,6 +41,52 @@ CREATE TABLE IF NOT EXISTS Cita (
     REFERENCES Medico (Id_Medico)
     ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS Pago (
+    Id_Pago SERIAL PRIMARY KEY,
+    Id_Cita INTEGER NOT NULL UNIQUE, -- UNIQUE garantiza que una cita no se pague dos veces
+    Monto DECIMAL(10, 2) NOT NULL CHECK (Monto >= 0),
+    Fecha_Pago TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Metodo_Pago VARCHAR(20) NOT NULL CHECK (Metodo_Pago IN ('Efectivo', 'Tarjeta', 'Transferencia')),
+    
+    CONSTRAINT fk_cita_pago
+    FOREIGN KEY (Id_Cita)
+    REFERENCES Cita (Id_Cita)
+    ON DELETE CASCADE
+);
+
+
+INSERT INTO Especialidad (Nombre) VALUES 
+('Medicina General'), 
+('Pediatría'), 
+('Cardiología'), 
+('Dermatología'), 
+('Ginecología');
+
+-- 2. Insertar Pacientes
+INSERT INTO Paciente (Apellido, Nombre, DNI, Telefono) VALUES 
+('García', 'Juan', '12345678', '987654321'),
+('Rodríguez', 'María', '87654321', '912345678'),
+('López', 'Carlos', '45678912', '933445566');
+
+-- 3. Insertar Médicos (Asociados a especialidad)
+INSERT INTO Medico (Apellido, Nombre, DNI, Telefono, Id_Especialidad) VALUES 
+('Pérez', 'Luis', '11223344', '955667788', 1),
+('Sánchez', 'Ana', '44332211', '944556677', 2),
+('Torres', 'Elena', '55667788', '922110033', 3);
+
+-- 4. Insertar Citas (Diferentes estados)
+INSERT INTO Cita (Id_Paciente, Id_Medico, Estado, Fecha, Hora) VALUES 
+(1, 1, 'Atendida', '2026-03-01', '10:00:00'), -- Cita de ayer
+(2, 2, 'Programada', '2026-03-05', '15:30:00'), -- Cita futura
+(3, 3, 'Atendida', '2026-03-02', '09:00:00'), -- Cita de hoy
+(1, 2, 'Cancelada', '2026-03-10', '11:00:00');
+
+-- 5. Insertar Pagos (Asociados a las citas 'Atendida')
+-- Solo pagaremos la cita 1 y la cita 3
+INSERT INTO Pago (Id_Cita, Monto, Metodo_Pago) VALUES 
+(1, 50.00, 'Efectivo'),
+(3, 75.50, 'Tarjeta');
 `;
 
 function crearTablas() {

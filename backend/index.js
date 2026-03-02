@@ -7,6 +7,7 @@ const crearTablas = require("./database/crearTablas");
 const pacientesApi = require("./apis/pacientes");
 const medicosApi = require("./apis/medicos");
 const citasApi = require("./apis/citas");
+const pagosApi = require("./apis/pagos");
 const dashboardRoutes = require("./apis/dashboard");
 
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/pacientes", pacientesApi);
 app.use("/medicos", medicosApi);
 app.use("/citas", citasApi);
+app.use("/pagos", pagosApi);
 app.use("/dashboard", dashboardRoutes);
 
 const port = process.env.SERVER_PORT;
