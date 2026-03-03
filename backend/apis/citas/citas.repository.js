@@ -15,13 +15,44 @@ async function obtenerCitaPorIdRepository(id) {
     return resultadoDeConsulta.rows;
 }
 
-async function crearCitaRepository(idPaciente, idMedico, estado, fecha, hora) {
-    const resultadoDeConsulta = await db.query(
-        "INSERT INTO cita (id_paciente, id_medico, estado, fecha, hora) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [idPaciente, idMedico, estado, fecha, hora]
-    );
+async function crearCitaRepository(datos) {
+    const { idPaciente, idMedico, estado, fecha, hora, monto, metodoPago } = datos;
 
-    return resultadoDeConsulta.rows;
+    // 1. Iniciamos la transacción
+    await db.query('BEGIN');
+
+    try {
+        // 2. Insertar la Cita y obtener el ID generado
+        const queryCita = `
+            INSERT INTO cita (id_paciente, id_medico, estado, fecha, hora) 
+            VALUES ($1, $2, $3, $4, $5) 
+            RETURNING id_cita
+        `;
+        const resCita = await db.query(queryCita, [idPaciente, idMedico, estado, fecha, hora]);
+        const idCitaRecienCreada = resCita.rows[0].id_cita;
+
+        // 3. Si el usuario envió un monto, insertamos en la tabla Pago
+        // Usamos el ID que acabamos de obtener en el paso anterior
+        if (monto && monto > 0) {
+            const queryPago = `
+                INSERT INTO pago (id_cita, monto, metodo_pago) 
+                VALUES ($1, $2, $3)
+            `;
+            await db.query(queryPago, [idCitaRecienCreada, monto, metodoPago || 'Efectivo']);
+        }
+
+        // 4. Si todo salió bien, confirmamos los cambios
+        await db.query('COMMIT');
+        
+        // Retornamos la cita creada para que el frontend reciba la confirmación
+        return resCita.rows;
+
+    } catch (error) {
+        // 5. Si algo falló (ej. error de red, dato inválido), deshacemos todo
+        await db.query('ROLLBACK');
+        console.error("Error en la transacción de cita y pago:", error);
+        throw error;
+    }
 }
 
 async function actualizarCitaRepository(idPaciente, idMedico, estado, fecha, hora, id) {

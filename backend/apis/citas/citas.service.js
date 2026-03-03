@@ -20,8 +20,8 @@ async function obtenerCitaPorId(id) {
     return cita[0];
 }
 
-async function crearCita(idPaciente, idMedico, estado, fecha, hora) {
-    const cita = await crearCitaRepository(idPaciente, idMedico, estado, fecha, hora);
+async function crearCita(datosCita) {
+    const cita = await crearCitaRepository(datosCita);
 
     if (cita.length === 0) {
         return {

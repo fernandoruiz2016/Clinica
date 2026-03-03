@@ -20,6 +20,8 @@ export class CrearCita implements OnInit {
     fecha: '',
     hora: '',
     estado: 'Programada', // Valor inicial
+    monto: null,
+    metodoPago: 'Efectivo',
   };
 
   pacientes: any[] = [];
@@ -58,16 +60,18 @@ export class CrearCita implements OnInit {
   }
 
   guardarCita() {
-    console.log('Datos que se enviarán al backend:', this.nuevaCita);
+    if (this.nuevaCita.monto && this.nuevaCita.monto > 0) {
+      this.nuevaCita.estado = 'Atendida';
+    }
+
     this.citaService.crearCita(this.nuevaCita).subscribe({
       next: (res) => {
-        console.log('Cita creada:', res);
         alert('¡Cita registrada con éxito!');
-        this.router.navigate(['/citas']); // Redirige a la tabla
+        this.router.navigate(['/citas']);
       },
       error: (err) => {
-        console.error('Error al crear cita:', err);
-        alert('Hubo un error al guardar la cita.');
+        console.error('Error:', err);
+        alert(err.error?.error?.message || 'Hubo un error al guardar la cita.');
       },
     });
   }

@@ -83,7 +83,7 @@
           <th>Médico</th>
           <th>Especialidad</th>
           <th>Estado Cita</th>
-          <th>Monto</th>
+          <th>Monto (S/.)</th>
           <th>Pago</th>
           <th>Acciones</th>
         </tr>
@@ -108,7 +108,7 @@
                 {{ cita.estado }}
               </span>
             </td>
-            <td>{{ cita.monto ? (cita.monto | currency) : '-' }}</td>
+            <td>{{ cita.monto ? (cita.monto) : '-' }}</td>
             <td>
               <span class="payment-badge" [ngClass]="cita.monto ? 'pagado' : 'pendiente'">
                 {{ cita.monto ? 'Completado' : 'Pendiente' }}

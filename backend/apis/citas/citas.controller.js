@@ -52,11 +52,25 @@ async function obtenerCitasPorIdController(req, res) {
 
 async function crearCitaController(req, res) {
   try {
-    const { idPaciente, idMedico, estado, fecha, hora } = req.body;
-    const cita = await crearCita(idPaciente, idMedico, estado, fecha, hora);
+    // 1. Extraemos TODOS los campos que vienen del Frontend (incluyendo monto y metodoPago)
+    const { idPaciente, idMedico, estado, fecha, hora, monto, metodoPago } =
+      req.body;
 
+    // 2. Pasamos un ÚNICO objeto con todos los datos al Service/Repository
+    // Esto coincide con el cambio que hicimos en el Repository anteriormente
+    const cita = await crearCita({
+      idPaciente,
+      idMedico,
+      estado,
+      fecha,
+      hora,
+      monto,
+      metodoPago,
+    });
+
+    // 3. Manejo de errores específicos (tu lógica actual)
     if (cita.error) {
-      const { codigo, mensaje, estado } = cita.error;
+      const { codigo, mensaje, estado: estadoError } = cita.error;
       const mensajeError = {
         error: {
           codigo: codigo,
@@ -65,21 +79,20 @@ async function crearCitaController(req, res) {
       };
 
       if (["001", "002"].includes(codigo)) {
-        return res.status(estado).json(mensajeError);
+        return res.status(estadoError).json(mensajeError);
       }
 
       console.error(`Error inesperado creando cita:`, cita.error);
       return res.status(500).json({
-        error: {
-          codigo: 500,
-          mensaje: "Error de servidor",
-        },
+        error: { codigo: 500, mensaje: "Error de servidor" },
       });
     }
 
+    // 4. Si todo salió bien, respondemos con la cita creada
     res.status(201).json(cita);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear la cita" });
+    console.error("Error en crearCitaController:", error);
+    res.status(500).json({ error: "Error al crear la cita y el pago" });
   }
 }
 
