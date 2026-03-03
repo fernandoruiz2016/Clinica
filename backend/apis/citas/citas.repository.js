@@ -7,12 +7,23 @@ async function obtenerCitasRepository() {
 }
 
 async function obtenerCitaPorIdRepository(id) {
-    const resultadoDeConsulta = await db.query(
-        "SELECT * FROM cita WHERE id_cita = $1",
-        [id]
-    );
-
-    return resultadoDeConsulta.rows;
+    const query = `
+        SELECT 
+            c.id_cita, 
+            c.id_paciente, 
+            c.id_medico, 
+            c.estado, 
+            c.fecha, 
+            c.hora, 
+            p.monto, 
+            p.metodo_pago
+        FROM cita c
+        LEFT JOIN pago p ON c.id_cita = p.id_cita
+        WHERE c.id_cita = $1
+    `;
+    // Es vital usar c.id_cita en el WHERE
+    const resultado = await db.query(query, [id]);
+    return resultado.rows[0];
 }
 
 async function crearCitaRepository(datos) {
@@ -55,13 +66,37 @@ async function crearCitaRepository(datos) {
     }
 }
 
-async function actualizarCitaRepository(idPaciente, idMedico, estado, fecha, hora, id) {
-    const resultadoDeConsulta = await db.query(
-        "UPDATE cita SET id_paciente = $1, id_medico = $2, estado = $3, fecha = $4, hora = $5 WHERE id_cita = $6 RETURNING *",
-        [idPaciente, idMedico, estado, fecha, hora, id]
-    );
+async function actualizarCitaRepository(idCita, datos) {
+    const { idPaciente, idMedico, estado, fecha, hora, monto, metodoPago } = datos;
 
-    return resultadoDeConsulta.rows;
+    await db.query('BEGIN');
+    try {
+        // 1. Actualizar Cita (Cambiado 'id' por 'idCita')
+        const resCita = await db.query(
+            `UPDATE cita SET id_paciente=$1, id_medico=$2, estado=$3, fecha=$4, hora=$5 
+             WHERE id_cita=$6 RETURNING *`,
+            [idPaciente, idMedico, estado, fecha, hora, idCita] 
+        );
+
+        // 2. Manejar Pago (UPSERT)
+        // Usamos idCita para vincular el pago
+        if (monto !== null && monto !== undefined) {
+            await db.query(`
+                INSERT INTO pago (id_cita, monto, metodo_pago)
+                VALUES ($1, $2, $3)
+                ON CONFLICT (id_cita) 
+                DO UPDATE SET monto = EXCLUDED.monto, metodo_pago = EXCLUDED.metodo_pago`,
+                [idCita, monto, metodoPago || 'Efectivo']
+            );
+        }
+
+        await db.query('COMMIT');
+        return resCita.rows; 
+    } catch (error) {
+        await db.query('ROLLBACK');
+        console.error("Error en repo:", error); // Para que veas el error real en consola
+        throw error;
+    }
 }
 
 async function eliminarCitaRepository(id) {

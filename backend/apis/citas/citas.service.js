@@ -17,7 +17,7 @@ async function obtenerCitaPorId(id) {
         };
     }
 
-    return cita[0];
+    return cita;
 }
 
 async function crearCita(datosCita) {
@@ -36,10 +36,11 @@ async function crearCita(datosCita) {
     return cita[0];
 }
 
-async function actualizarCita(idPaciente, idMedico, estado, fecha, hora, id) {
-    const cita = await actualizarCitaRepository(idPaciente, idMedico, estado, fecha, hora, id);
+async function actualizarCita(id, datosCita) {
 
-    if (cita.length === 0) {
+    const cita = await actualizarCitaRepository(id, datosCita);
+
+    if (!cita || cita.length === 0) {
         return {
             error: {
                 code: "001",

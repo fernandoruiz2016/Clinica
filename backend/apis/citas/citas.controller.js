@@ -22,31 +22,16 @@ async function obtenerCitasPorIdController(req, res) {
     const { id } = req.params;
     const cita = await obtenerCitaPorId(id);
 
-    if (cita.error) {
-      const { codigo, mensaje, estado } = cita.error;
-      const mensajeError = {
-        error: {
-          codigo: codigo,
-          mensaje: mensaje,
-        },
-      };
-
-      if (["001", "002"].includes(codigo)) {
-        return res.status(estado).json(mensajeError);
-      }
-
-      console.error(`Error inesperado obteniendo cita:`, cita.error);
-      return res.status(500).json({
-        error: {
-          codigo: 500,
-          mensaje: "Error de servidor",
-        },
-      });
+    if (cita && cita.error) {
+      // ... tu lógica de manejo de errores 001, 002
+      return res.status(cita.error.estado).json({ error: cita.error });
     }
 
     res.status(200).json(cita);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener la cita" });
+    console.error("--- ERROR REAL EN EL BACKEND ---");
+    console.error(error);
+    res.status(500).json({ error: "Error interno", detalle: error.message });
   }
 }
 
@@ -98,41 +83,30 @@ async function crearCitaController(req, res) {
 
 async function actualizarCitaController(req, res) {
   try {
-    const { id } = req.params;
-    const { idPaciente, idMedico, estado, fecha, hora } = req.body;
-    const cita = await actualizarCita(
+    const { id } = req.params; // El ID que viene en la URL /api/citas/15
+    const { idPaciente, idMedico, estado, fecha, hora, monto, metodoPago } = req.body;
+
+    // Llamamos al service pasando el ID y el objeto consolidado
+    const cita = await actualizarCita(id, {
       idPaciente,
       idMedico,
       estado,
       fecha,
       hora,
-      id,
-    );
+      monto,
+      metodoPago
+    });
 
     if (cita.error) {
-      const { codigo, mensaje, estado } = cita.error;
-      const mensajeError = {
-        error: {
-          codigo: codigo,
-          mensaje: mensaje,
-        },
-      };
-
-      if (["001", "002"].includes(codigo)) {
-        return res.status(estado).json(mensajeError);
-      }
-
-      console.error(`Error inesperado actualizando cita:`, cita.error);
-      return res.status(500).json({
-        error: {
-          codigo: 500,
-          mensaje: "Error de servidor",
-        },
+      const { codigo, mensaje, estado: estadoError } = cita.error;
+      return res.status(estadoError).json({
+        error: { codigo, mensaje }
       });
     }
 
     res.status(200).json(cita);
   } catch (error) {
+    console.error("Error en actualizarCitaController:", error);
     res.status(500).json({ error: "Error al actualizar la cita" });
   }
 }

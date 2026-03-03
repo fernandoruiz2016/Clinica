@@ -24,6 +24,8 @@ export class EditarCita implements OnInit {
     fecha: '',
     hora: '',
     estado: '',
+    monto: '',
+    metodoPago: ''
   };
 
   constructor(
@@ -44,21 +46,31 @@ export class EditarCita implements OnInit {
     // Cargar los datos de la cita
     this.citaService.obtenerCitaPorId(this.idCita).subscribe({
       next: (data) => {
-        // 1. Limpiamos la fecha por si viene con ISO String
-        const fechaLimpia = data.fecha.includes('T') ? data.fecha.split('T')[0] : data.fecha;
+        if (!data) return;
 
-        // 2. Limpiamos la hora: si viene "14:30:00", tomamos solo "14:30"
-        const horaLimpia = data.hora.length > 5 ? data.hora.substring(0, 5) : data.hora;
+        // Formateo seguro: si no hay fecha/hora, ponemos string vacío para que no explote
+        const fechaLimpia = data.fecha
+          ? data.fecha.includes('T')
+            ? data.fecha.split('T')[0]
+            : data.fecha
+          : '';
+        const horaLimpia = data.hora
+          ? data.hora.length > 5
+            ? data.hora.substring(0, 5)
+            : data.hora
+          : '';
 
         this.cita = {
-          idPaciente: data.id_paciente,
-          idMedico: data.id_medico,
+          idPaciente: data.id_paciente || data.Id_Paciente, // Soporta ambos casos
+          idMedico: data.id_medico || data.Id_Medico,
           fecha: fechaLimpia,
-          hora: horaLimpia, // <--- Aquí ya va sin segundos
-          estado: data.estado,
+          hora: horaLimpia,
+          estado: data.estado || data.Estado,
+          monto: data.monto || data.Monto || 0, // Si es null, ponemos 0
+          metodoPago: data.metodo_pago || data.Metodo_Pago || 'Efectivo',
         };
       },
-      error: (err) => alert('Error al cargar la cita'),
+      error: (err) => console.error('Error detallado:', err),
     });
   }
 

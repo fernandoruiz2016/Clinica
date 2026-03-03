@@ -7,7 +7,7 @@
         <label>Paciente</label>
         <select name="idPaciente" [(ngModel)]="cita.idPaciente" required>
           @for (p of pacientes; track p.id_paciente) {
-            <option [ngValue]="p.id_paciente">{{ p.nombre }}</option>
+            <option [ngValue]="p.id_paciente">{{ p.nombre }} {{ p.apellido }}</option>
           }
         </select>
       </div>
@@ -17,13 +17,13 @@
         <select name="idMedico" [(ngModel)]="cita.idMedico" required>
           <option value="" disabled>Seleccione un médico</option>
           @for (m of medicos; track m.id_medico) {
-            <option [ngValue]="m.id_medico">{{ m.nombre }}</option>
+            <option [ngValue]="m.id_medico">{{ m.nombre }} {{ m.apellido }}</option>
           }
         </select>
       </div>
 
       <div class="form-group">
-        <label>Estado</label>
+        <label>Estado Cita</label>
         <select name="estado" [(ngModel)]="cita.estado" required>
           <option value="Programada">Programada</option>
           <option value="Atendida">Atendida</option>
@@ -42,6 +42,25 @@
       <div class="form-group">
         <label>Hora</label>
         <input type="time" name="hora" [(ngModel)]="cita.hora" required />
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <h3>Información de Pago</h3>
+      <div class="row">
+        <div class="form-group">
+          <label>Monto</label>
+          <input type="number" name="monto" [(ngModel)]="cita.monto" placeholder="0.00" min="0" step="0.1" />
+        </div>
+
+        <div class="form-group">
+          <label>Método de Pago</label>
+          <select name="metodoPago" [(ngModel)]="cita.metodoPago">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
+        </div>
       </div>
     </div>
 
