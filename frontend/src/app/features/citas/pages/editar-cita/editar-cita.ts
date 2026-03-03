@@ -61,13 +61,13 @@ export class EditarCita implements OnInit {
           : '';
 
         this.cita = {
-          idPaciente: data.id_paciente || data.Id_Paciente, // Soporta ambos casos
-          idMedico: data.id_medico || data.Id_Medico,
+          idPaciente: data.id_paciente,
+          idMedico: data.id_medico,
           fecha: fechaLimpia,
           hora: horaLimpia,
-          estado: data.estado || data.Estado,
-          monto: data.monto || data.Monto || 0, // Si es null, ponemos 0
-          metodoPago: data.metodo_pago || data.Metodo_Pago || 'Efectivo',
+          estado: data.estado,
+          monto: data.monto || 0, // Si es null, ponemos 0
+          metodoPago: data.metodo_pago || 'Efectivo',
         };
       },
       error: (err) => console.error('Error detallado:', err),
