@@ -12,20 +12,20 @@ import { DashboardService } from '../../../../services/dashboard';
 })
 export class Home implements OnInit {
   citas: number = 0;
-  totalCitas: number = 0;
+  citasPendientes: number = 0;
   totalPacientes: number = 0;
 
   datos: any = {};
 
   constructor(
     private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.dashboardService.obtenerDashboard().subscribe((data: any) => {
       this.citas = Number(data.citas_hoy);
-      this.totalCitas = Number(data.citas_pendientes);
+      this.citasPendientes = Number(data.citas_pendientes);
       this.totalPacientes = Number(data.total_pacientes);
       this.cdr.detectChanges();
     });
