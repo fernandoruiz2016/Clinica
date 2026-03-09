@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="login-card">
+        <h2>Veterinaria - Acceso</h2>
+
+        <form (ngSubmit)="onLogin()">
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario" [(ngModel)]="credentials.usuario" placeholder="admin" required />
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" name="clave" [(ngModel)]="credentials.clave" placeholder="****" required />
+            </div>
+
+            @if (errorMessage) {
+                <p class="error-msg">{{ errorMessage }}</p>
+            }
+
+            <button type="submit" class="btn-save" [disabled]="loading">
+                {{ loading ? 'Cargando...' : 'Ingresar' }}
+            </button>
+        </form>
+    </div>
+</div>
