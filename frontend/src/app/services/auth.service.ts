@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://tu-api.com/api/auth';
+  private apiUrl = 'http://localhost:3000';
   private loggedIn = new BehaviorSubject<boolean>(false); // Iniciamos en false
 
   constructor(

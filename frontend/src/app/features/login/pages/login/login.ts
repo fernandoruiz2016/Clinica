@@ -23,15 +23,14 @@ export class Login {
 
   onLogin() {
     this.loading = true;
-    this.errorMessage = '';
-
     this.authService.login(this.credentials).subscribe({
-      next: () => {
-        this.router.navigate(['/mascotas']);
+      next: (res) => {
+        this.loading = false; // <-- APAGAR CARGANDO
+        this.router.navigate(['']); // O la ruta que uses
       },
       error: (err) => {
-        this.loading = false;
-        this.errorMessage = 'Credenciales inválidas o error de conexión';
+        this.loading = false; // <-- APAGAR CARGANDO TAMBIÉN AQUÍ
+        this.errorMessage = 'Error en el servidor o credenciales';
       },
     });
   }

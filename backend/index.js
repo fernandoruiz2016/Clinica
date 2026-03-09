@@ -9,6 +9,7 @@ const medicosApi = require("./apis/medicos");
 const citasApi = require("./apis/citas");
 const pagosApi = require("./apis/pagos");
 const dashboardRoutes = require("./apis/dashboard");
+const authApi = require("./apis/auth");
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use("/medicos", medicosApi);
 app.use("/citas", citasApi);
 app.use("/pagos", pagosApi);
 app.use("/dashboard", dashboardRoutes);
+app.use("/login", authApi);
 
 const port = process.env.SERVER_PORT;
 
