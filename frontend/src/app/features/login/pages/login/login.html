@@ -1,24 +1,34 @@
 <div class="login-container">
     <div class="login-card">
-        <h2>Veterinaria - Acceso</h2>
+        <h2>Clínica Lima del Mar</h2>
+        <p class="subtitle">Sistema de Gestión</p>
 
         <form (ngSubmit)="onLogin()">
             <div class="form-group">
                 <label>Usuario</label>
-                <input type="text" name="usuario" [(ngModel)]="credentials.usuario" placeholder="admin" required />
+                <input type="text" name="usuario" [(ngModel)]="credentials.usuario"
+                       placeholder="Nombre de usuario" required />
             </div>
 
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" name="clave" [(ngModel)]="credentials.clave" placeholder="****" required />
+                <input type="password" name="clave" [(ngModel)]="credentials.clave"
+                       placeholder="••••••••" required />
             </div>
 
             @if (errorMessage) {
-                <p class="error-msg">{{ errorMessage }}</p>
+                <div class="error-msg">
+                    {{ errorMessage }}
+                </div>
             }
 
             <button type="submit" class="btn-save" [disabled]="loading">
-                {{ loading ? 'Cargando...' : 'Ingresar' }}
+                @if (loading) {
+                    <span class="spinner"></span>
+                    <span>Verificando...</span>
+                } @else {
+                    <span>Iniciar Sesión</span>
+                }
             </button>
         </form>
     </div>
