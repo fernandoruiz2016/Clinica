@@ -4,11 +4,16 @@ import { Layout } from './shared/layout/layout';
 import { CitasComponent } from './features/citas/pages/citas-component/citas-component';
 import { CrearCita } from './features/citas/pages/crear-cita/crear-cita';
 import { EditarCita } from './features/citas/pages/editar-cita/editar-cita';
+import { authGuard } from './shared/guards/auth-guard';
+import { Login } from './features/login/pages/login/login';
 
 export const routes: Routes = [
+  { path: 'login', component: Login },
+
   {
     path: '',
     component: Layout,
+    canActivate: [authGuard],
     children: [
       { path: '', component: Home },
       // { path: 'pacientes', component: PacientesComponent },
@@ -19,4 +24,6 @@ export const routes: Routes = [
       // { path: 'reportes', component: ReportesComponent },
     ],
   },
+
+  { path: '**', redirectTo: 'login' },
 ];
