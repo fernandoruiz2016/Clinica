@@ -55,6 +55,16 @@ CREATE TABLE IF NOT EXISTS Pago (
     ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Usuario (
+    Id_Usuario SERIAL PRIMARY KEY,
+    Usuario VARCHAR(50) NOT NULL UNIQUE,
+    Clave VARCHAR(255) NOT NULL,
+    Rol VARCHAR(20) DEFAULT 'Admin'
+);
+
+INSERT INTO Usuario (Usuario, Clave) 
+VALUES ('admin', '$2b$10$u8zdQdtMRsGzlU8QWOPlVuBpRst6GNjOdLbahBWA.d3pSExh8upIa') 
+ON CONFLICT (Usuario) DO NOTHING;
 `;
 
 function crearTablas() {
