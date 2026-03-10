@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,4 +8,16 @@ import { RouterModule } from '@angular/router';
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.css',
 })
-export class NavBar {}
+export class NavBar {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
+
+  onLogout() {
+    localStorage.removeItem('token');
+
+    console.log('Sesión finalizada en Clínica Lima del Mar');
+    this.router.navigate(['/login']);
+  }
+}

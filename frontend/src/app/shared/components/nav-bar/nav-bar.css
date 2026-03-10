@@ -52,6 +52,22 @@ img {
     background-color: #3A1655;;
 }
 
+.logout-link {
+  color: white;
+  font-weight: 500;
+}
+
+.logout-link svg {
+  width: 1.2rem;
+  height: auto;
+  fill: white;
+  transition: all 0.3s ease;
+}
+
+.logout-link:hover svg {
+  transform: translateX(3px);
+}
+
 @media screen and (max-width: 768px) {
     :host {
         display: none;
