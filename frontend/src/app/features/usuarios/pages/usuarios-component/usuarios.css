@@ -1,0 +1,229 @@
+/* Contenedor Principal */
+.citas-container {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h2 {
+    color: #7F00E0;
+}
+
+.subtitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.subtitle a {
+    background-color: #7F00E0;
+    text-decoration: none;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.subtitle a:hover {
+    background-color: #6600b5;
+}
+
+/* Filtros - Grid de 3 columnas para Usuarios */
+.filter-wrapper {
+    background-color: white;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-wrapper h3 {
+    color: #7F00E0;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.filter-form {
+    display: grid;
+    /* Para usuarios usamos 3 columnas (Usuario, Rol y Botón) */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 20px;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.form-group input,
+.form-group select {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.2s;
+    padding: 8px 10px;
+    font-size: 13px;
+    background-color: #fcfcfc;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #7F00E0;
+    background-color: white;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-submit {
+    background-color: #7F00E0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    height: 38px;
+    padding: 0 30px;
+}
+
+.btn-submit:hover {
+    background-color: #6600b5;
+}
+
+/* Tabla */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+table.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+thead {
+    background-color: #7F00E0;
+    color: white;
+}
+
+thead th {
+    padding: 15px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f6ff;
+}
+
+tbody tr:hover {
+    background-color: #f1e6ff;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Badges de Roles (Dinámicos) */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.admin {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-badge.medico {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.recepcionista {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+/* Badge de Seguridad (Bcrypt) */
+.payment-badge.pagado {
+    background-color: #f0ebff;
+    color: #7F00E0;
+    border: 1px solid #dcd0ff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-delete {
+    padding: 6px 14px;
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #ffcdd2;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.btn-delete:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .subtitle {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+}

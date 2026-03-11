@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { findByUsuario, crearUsuario } = require("./auth.repository");
+const { findByUsuario, crearUsuario, obtenerUsuarios, eliminarUsuario } = require("./auth.repository");
 
 async function login(usuario, clave) {
   try {
@@ -39,7 +39,17 @@ async function registrar(usuario, claveOriginal) {
   return await crearUsuario(usuario, claveHash);
 }
 
+async function listarUsuarios(filtros) {
+  return await obtenerUsuarios(filtros);
+}
+
+async function removerUsuario(id) {
+  return await eliminarUsuario(id);
+}
+
 module.exports = {
   login: login,
   registrar: registrar,
+  listarUsuarios: listarUsuarios,
+  removerUsuario: removerUsuario,
 };

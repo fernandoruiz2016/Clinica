@@ -1,4 +1,4 @@
-const { login, registrar } = require("./auth.service");
+const { login, registrar, listarUsuarios, removerUsuario } = require("./auth.service");
 
 async function loginController(req, res) {
   try {
@@ -26,7 +26,29 @@ async function registerController(req, res) {
   }
 }
 
+async function listadoController(req, res) {
+  try {
+    const filtros = req.query;
+    const usuarios = await listarUsuarios(filtros);
+    res.status(200).json(usuarios);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener usuarios" });
+  }
+}
+
+async function eliminarController(req, res) {
+  try {
+    const { id } = req.params;
+    await removerUsuario(id);
+    res.status(200).json({ message: "Usuario eliminado" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar" });
+  }
+}
+
 module.exports = {
   loginController: loginController,
   registerController: registerController,
+  listadoController: listadoController,
+  eliminarController: eliminarController,
 };

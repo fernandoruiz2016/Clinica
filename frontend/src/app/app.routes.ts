@@ -6,6 +6,8 @@ import { CrearCita } from './features/citas/pages/crear-cita/crear-cita';
 import { EditarCita } from './features/citas/pages/editar-cita/editar-cita';
 import { authGuard } from './shared/guards/auth-guard';
 import { Login } from './features/login/pages/login/login';
+import { UsuariosComponent } from './features/usuarios/pages/usuarios-component/usuarios';
+import { CrearUsuario } from './features/usuarios/pages/crear-usuario/crear-usuario';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -22,6 +24,8 @@ export const routes: Routes = [
       { path: 'citas/editar/:id', component: EditarCita },
       // { path: 'medicos', component: MedicosComponent },
       // { path: 'reportes', component: ReportesComponent },
+      { path: 'usuarios', component: UsuariosComponent },
+      { path: 'usuarios/crear', component: CrearUsuario },
     ],
   },
 

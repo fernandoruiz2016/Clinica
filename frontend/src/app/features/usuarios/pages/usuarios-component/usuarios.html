@@ -1,0 +1,67 @@
+<div class="citas-container">
+  <div class="subtitle">
+    <h2>Gestión de Usuarios</h2>
+    <a routerLink="crear" routerLinkActive="active">+ Registrar Personal</a>
+  </div>
+
+  <div class="filter-wrapper">
+    <h3>Buscar por:</h3>
+    <form class="filter-form" (ngSubmit)="onFiltrar()">
+      <div class="form-group">
+        <label>Nombre de Usuario</label>
+        <input type="text" name="usuario" [(ngModel)]="filtros.usuario" placeholder="Ej. admin_pediatria" />
+      </div>
+
+      <div class="form-group">
+        <label>Rol del Sistema</label>
+        <select name="rol" [(ngModel)]="filtros.rol">
+          <option value="">Todos</option>
+          <option value="Recepcionista">Recepcionista</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Filtrar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Rol / Nivel de Acceso</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of usuarios; track u.id_usuario) {
+          <tr>
+            <td><code>#{{ u.id_usuario }}</code></td>
+            <td><strong>{{ u.usuario }}</strong></td>
+            <td>
+              <span class="status-badge {{ u.rol.toLowerCase() }}">
+                {{ u.rol }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                @if (u.usuario !== 'admin') {
+                  <button class="btn-delete" (click)="eliminarUsuario(u.id_usuario)">Eliminar</button>
+                } @else {
+                  <small>Protegido</small>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">No hay personal registrado en el sistema</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
