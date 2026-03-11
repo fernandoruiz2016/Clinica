@@ -22,7 +22,7 @@ app.use("/medicos", medicosApi);
 app.use("/citas", citasApi);
 app.use("/pagos", pagosApi);
 app.use("/dashboard", dashboardRoutes);
-app.use("/login", authApi);
+app.use("/auth", authApi);
 
 const port = process.env.SERVER_PORT;
 

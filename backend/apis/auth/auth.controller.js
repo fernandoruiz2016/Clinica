@@ -1,4 +1,4 @@
-const { login } = require("./auth.service");
+const { login, registrar } = require("./auth.service");
 
 async function loginController(req, res) {
   try {
@@ -6,13 +6,27 @@ async function loginController(req, res) {
     const result = await login(usuario, clave);
     return res.status(200).json(result);
   } catch (error) {
-    // ESTA LÍNEA ES CLAVE: Mira tu terminal de VS Code / Node
-    console.error("ERROR EN LOGIN:", error.message);
-
     return res.status(401).json({ message: error.message });
+  }
+}
+
+async function registerController(req, res) {
+  try {
+    const { usuario, clave, rol } = req.body;
+
+    const nuevoUsuario = await registrar(usuario, clave, rol);
+
+    return res.status(201).json({
+      message: "Usuario creado exitosamente",
+      userId: nuevoUsuario.id,
+    });
+  } catch (error) {
+    console.error("[Register Error]:", error.message);
+    return res.status(400).json({ message: error.message });
   }
 }
 
 module.exports = {
   loginController: loginController,
+  registerController: registerController,
 };

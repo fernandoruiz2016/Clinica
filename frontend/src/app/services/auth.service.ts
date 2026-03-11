@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   login(credentials: { usuario: string; clave: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, credentials).pipe(
       tap((res) => {
         if (res.token && isPlatformBrowser(this.platformId)) {
           localStorage.setItem('token', res.token);
