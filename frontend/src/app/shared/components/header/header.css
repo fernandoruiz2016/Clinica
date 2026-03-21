@@ -62,18 +62,33 @@ h1 {
     background: #520091;
     color: white;
     transition: 0.3s;
-    padding-top: 60px;
+    padding-top: 80px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 25px;
     justify-content: flex-start;
     align-items: center;
     z-index: 10;
 }
 
 .sidebar a {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
+    width: 85%;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.sidebar a:last-child {
+    border-bottom: none;
+    margin-top: 10px;
+}
+
+.sidebar a:hover {
+    border-bottom-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
 }
 
 .sidebar.open {
