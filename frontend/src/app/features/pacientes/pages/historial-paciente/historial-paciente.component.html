@@ -1,0 +1,41 @@
+<div class="citas-container">
+  <div class="subtitle">
+    <h2>Historial de Citas: {{ pacienteNombre }}</h2>
+    <a routerLink="/pacientes" class="btn-back">Volver a Pacientes</a>
+  </div>
+
+  <div class="table-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Médico</th>
+          <th>Especialidad</th>
+          <th>Estado</th>
+          <th>Monto (S/.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cita of historial; track cita.id_cita) {
+          <tr>
+            <td>{{ cita.fecha }}</td>
+            <td>{{ cita.hora }}</td>
+            <td>{{ cita.medico }}</td>
+            <td>{{ cita.especialidad }}</td>
+            <td>
+              <span class="status-badge {{ cita.estado.toLowerCase().replace(' ', '-') }}">
+                {{ cita.estado }}
+              </span>
+            </td>
+            <td>{{ cita.monto ? cita.monto : '-' }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No hay citas registradas para este paciente</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

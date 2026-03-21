@@ -1,1 +1,82 @@
-<p>pacientes-component works!</p>
+<div class="citas-container">
+  <div class="subtitle">
+    <h2>Gestión de Pacientes</h2>
+    <a routerLink="crear" routerLinkActive="active">+ Crear paciente</a>
+  </div>
+
+  <div class="filter-wrapper">
+    <h3>Buscar por:</h3>
+    <form class="filter-form" (ngSubmit)="onFiltrar()">
+      <div class="form-group">
+        <label>DNI</label>
+        <input type="text" name="dni" [(ngModel)]="filtros.dni" placeholder="Ej. 12345678" />
+      </div>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="filtros.nombre" placeholder="Nombre..." />
+      </div>
+
+      <div class="form-group">
+        <label>Apellido</label>
+        <input type="text" name="apellido" [(ngModel)]="filtros.apellido" placeholder="Apellido..." />
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" [(ngModel)]="filtros.telefono" placeholder="Ej. 987654321" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Filtrar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (paciente of pacientes; track paciente.id_paciente) {
+          <tr>
+            <td>
+              <code>{{ paciente.id_paciente }}</code>
+            </td>
+            <td>
+              <strong>{{ paciente.apellido }}</strong>
+            </td>
+            <td>{{ paciente.nombre }}</td>
+            <td>{{ paciente.dni }}</td>
+            <td>{{ paciente.telefono }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-history" [routerLink]="['/pacientes/historial', paciente.id_paciente]">
+                  Historial
+                </button>
+                <button class="btn-edit" [routerLink]="['/pacientes/editar', paciente.id_paciente]">
+                  Editar
+                </button>
+                <button class="btn-delete" (click)="eliminarPaciente(paciente.id_paciente)">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No hay pacientes registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
