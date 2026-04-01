@@ -11,6 +11,8 @@ import { CrearUsuario } from './features/usuarios/pages/crear-usuario/crear-usua
 import { PacientesComponent } from './features/pacientes/pages/pacientes-component/pacientes-component';
 import { MedicosComponent } from './features/medicos/pages/medicos-component/medicos-component';
 import { ReportesComponent } from './features/reportes/pages/reportes-component/reportes-component';
+import { CrearMedico } from './features/medicos/pages/crear-medico/crear-medico';
+import { EditarMedico } from './features/medicos/pages/editar-medico/editar-medico';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -29,6 +31,8 @@ export const routes: Routes = [
       { path: 'reportes', component: ReportesComponent },
       { path: 'usuarios', component: UsuariosComponent },
       { path: 'usuarios/crear', component: CrearUsuario },
+      { path: 'medicos/crear',component:CrearMedico},
+      { path: 'medicos/editar/:id', component: EditarMedico }
     ],
   },
 

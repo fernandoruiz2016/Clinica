@@ -1,0 +1,54 @@
+<div class="form-container">
+  <h2>Editar Médico</h2>
+
+  <form (ngSubmit)="actualizarMedico()" #editForm="ngForm">
+
+    <div class="row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="medico.nombre" required />
+      </div>
+
+      <div class="form-group">
+        <label>Apellido</label>
+        <input type="text" name="apellido" [(ngModel)]="medico.apellido" required />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>DNI</label>
+        <input type="text" name="dni" [(ngModel)]="medico.dni" required />
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" [(ngModel)]="medico.telefono" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Especialidad</label>
+      <select name="idEspecialidad" [(ngModel)]="medico.idEspecialidad" required>
+        <option value="" disabled>Seleccione una especialidad</option>
+
+        @for (e of especialidades; track e.id_especialidad) {
+          <option [ngValue]="e.id_especialidad">
+            {{ e.nombre }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-cancel" routerLink="/medicos">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-save" [disabled]="!editForm.valid">
+        Guardar Cambios
+      </button>
+    </div>
+
+  </form>
+</div>

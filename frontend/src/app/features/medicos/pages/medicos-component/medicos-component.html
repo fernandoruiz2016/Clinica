@@ -1,1 +1,90 @@
-<p>medicos-component works!</p>
+<div class="citas-container">
+  <div class="subtitle">
+    <h2>Gestión de Médicos</h2>
+    <a routerLink="crear" routerLinkActive="active">+ Crear médico</a>
+  </div>
+
+  <div class="filter-wrapper">
+    <h3>Buscar por:</h3>
+
+    <form class="filter-form" (ngSubmit)="onFiltrar()">
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtros.nombre" 
+          name="nombre" 
+          placeholder="Nombre..." 
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Especialidad</label>
+        <input 
+          type="text" 
+          [(ngModel)]="filtros.especialidad" 
+          name="especialidad" 
+          placeholder="Ej. Cardiología" 
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Filtrar</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Especialidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (medico of medicos; track medico.id_medico) {
+          <tr>
+            <td>{{ medico.nombre }}</td>
+            <td>{{ medico.apellido }}</td>
+            <td>{{ medico.dni }}</td>
+            <td>{{ medico.telefono }}</td>
+            <td>{{ medico.especialidad }}</td>
+
+            <td>
+              <div class="action-buttons">
+                
+                <button 
+                  class="btn-edit"
+                  [routerLink]="['/medicos/editar', medico.id_medico]"
+                >
+                  Editar
+                </button>
+
+                <button 
+                  class="btn-delete" 
+                  (click)="eliminar(medico.id_medico)"
+                >
+                  Eliminar
+                </button>
+
+              </div>
+            </td>
+
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No hay médicos registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

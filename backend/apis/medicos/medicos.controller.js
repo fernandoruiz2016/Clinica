@@ -1,4 +1,4 @@
-const { obtenerMedicos, obtenerMedicoPorId, crearMedico, actualizarMedico, eliminarMedico } = require("./medicos.service");
+const { obtenerMedicos, obtenerMedicoPorId, crearMedico, actualizarMedico, eliminarMedico, obtenerEspecialidades } = require("./medicos.service");
 
 async function obtenerMedicosController(req, res) {
   try {
@@ -140,6 +140,14 @@ async function eliminarMedicoController(req, res) {
     res.status(500).json({ error: "Error al eliminar el medico" });
   }
 }
+async function obtenerEspecialidadesController(req, res) {
+  try {
+    const especialidades = await obtenerEspecialidades();
+    res.status(200).json(especialidades);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener especialidades" });
+  }
+}
 
 module.exports = {
   obtenerMedicosController: obtenerMedicosController,
@@ -147,4 +155,5 @@ module.exports = {
   crearMedicoController: crearMedicoController,
   actualizarMedicoController: actualizarMedicoController,
   eliminarMedicoController: eliminarMedicoController,
+  obtenerEspecialidadesController
 };

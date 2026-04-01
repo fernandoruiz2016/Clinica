@@ -1,9 +1,20 @@
 const db = require("../../database/conexion");
 
 async function obtenerMedicosRepository() {
-    const resultadoDeConsulta = await db.query("SELECT * FROM medico");
+    const resultadoDeConsulta = await db.query(`
+        SELECT 
+            m.id_medico,
+            m.nombre,
+            m.apellido,
+            m.dni,
+            m.telefono,
+            e.nombre AS especialidad
+        FROM medico m
+        LEFT JOIN especialidad e 
+            ON m.id_especialidad = e.id_especialidad
+    `);
 
-    return resultadoDeConsulta.rows
+    return resultadoDeConsulta.rows;
 }
 
 async function obtenerMedicoPorIdRepository(id) {
@@ -42,10 +53,20 @@ async function eliminarMedicoRepository(id) {
     return resultadoDeConsulta.rows;
 }
 
+// ✅ ESTA FUNCIÓN SÍ EXISTE (la agregamos)
+async function obtenerEspecialidadesRepository() {
+    const resultadoDeConsulta = await db.query(
+        "SELECT * FROM especialidad"
+    );
+
+    return resultadoDeConsulta.rows;
+}
+
 module.exports = {
-    obtenerMedicosRepository: obtenerMedicosRepository,
-    obtenerMedicoPorIdRepository: obtenerMedicoPorIdRepository,
-    crearMedicoRepository: crearMedicoRepository,
-    actualizarMedicoRepository: actualizarMedicoRepository,
-    eliminarMedicoRepository: eliminarMedicoRepository,
+    obtenerMedicosRepository,
+    obtenerMedicoPorIdRepository,
+    crearMedicoRepository,
+    actualizarMedicoRepository,
+    eliminarMedicoRepository,
+    obtenerEspecialidadesRepository
 };

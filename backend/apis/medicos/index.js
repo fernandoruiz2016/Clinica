@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const {validarMedico} = require("../../middleware/medicos/validacion")
-const { obtenerMedicosController, obtenerMedicosPorIdController, crearMedicoController,actualizarMedicoController, eliminarMedicoController } = require("./medicos.controller")
-
+const { obtenerMedicosController, obtenerMedicosPorIdController, crearMedicoController,actualizarMedicoController, eliminarMedicoController, obtenerEspecialidadesController } = require("./medicos.controller")
+router.get("/especialidades", obtenerEspecialidadesController);
 // Obtener todos los medicos
 router.get("/", obtenerMedicosController);
 
