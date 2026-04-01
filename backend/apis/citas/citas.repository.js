@@ -130,7 +130,7 @@ async function obtenerCitasDelDia() {
 }
 
 async function obtenerCitasFiltradas(filtros = {}) {
-  const { dni, fecha, estado, paciente, medico, especialidad, pago } = filtros;
+  const { dni, fecha, estado, paciente, medico, especialidad, pago, idPaciente } = filtros;
 
   let query = `
     SELECT 
@@ -183,6 +183,11 @@ async function obtenerCitasFiltradas(filtros = {}) {
   if (especialidad) {
     query += ` AND e.Nombre ILIKE $${count++}`;
     values.push(`%${especialidad}%`);
+  }
+
+  if (idPaciente) {
+    query += ` AND p.Id_Paciente = $${count++}`;
+    values.push(idPaciente);
   }
 
   // Lógica de pago

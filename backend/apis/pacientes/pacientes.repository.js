@@ -42,10 +42,39 @@ async function eliminarPacienteRepository(id) {
     return resultadoDeConsulta.rows;
 }
 
+async function obtenerPacientesFiltradosRepository(filtros = {}) {
+    const { dni, nombre, apellido, telefono } = filtros;
+    let query = "SELECT * FROM paciente WHERE 1=1";
+    const values = [];
+    let count = 1;
+
+    if (dni) {
+        query += ` AND dni LIKE $${count++}`;
+        values.push(`${dni}%`);
+    }
+    if (nombre) {
+        query += ` AND nombre ILIKE $${count++}`;
+        values.push(`%${nombre}%`);
+    }
+    if (apellido) {
+        query += ` AND apellido ILIKE $${count++}`;
+        values.push(`%${apellido}%`);
+    }
+    if (telefono) {
+        query += ` AND telefono LIKE $${count++}`;
+        values.push(`%${telefono}%`);
+    }
+
+    query += " ORDER BY apellido ASC, nombre ASC";
+    const resultadoDeConsulta = await db.query(query, values);
+    return resultadoDeConsulta.rows;
+}
+
 module.exports = {
     obtenerPacientesRepository: obtenerPacientesRepository,
     obtenerPacientePorIdRepository: obtenerPacientePorIdRepository,
     crearPacienteRepository: crearPacienteRepository,
     actualizarPacienteRepository: actualizarPacienteRepository,
     eliminarPacienteRepository: eliminarPacienteRepository,
+    obtenerPacientesFiltradosRepository: obtenerPacientesFiltradosRepository,
 };

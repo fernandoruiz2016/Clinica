@@ -13,6 +13,8 @@ import { MedicosComponent } from './features/medicos/pages/medicos-component/med
 import { ReportesComponent } from './features/reportes/pages/reportes-component/reportes-component';
 import { CrearMedico } from './features/medicos/pages/crear-medico/crear-medico';
 import { EditarMedico } from './features/medicos/pages/editar-medico/editar-medico';
+import { HistorialPacienteComponent } from './features/pacientes/pages/historial-paciente/historial-paciente.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -24,6 +26,9 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home },
       { path: 'pacientes', component: PacientesComponent },
+      { path: 'pacientes/crear', loadComponent: () => import('./features/pacientes/pages/crear-paciente/crear-paciente').then(m => m.CrearPaciente) },
+      { path: 'pacientes/historial/:id', component: HistorialPacienteComponent },
+      { path: 'pacientes/editar/:id', loadComponent: () => import('./features/pacientes/pages/editar-paciente/editar-paciente').then(m => m.EditarPaciente) },
       { path: 'citas', component: CitasComponent },
       { path: 'citas/crear', component: CrearCita },
       { path: 'citas/editar/:id', component: EditarCita },

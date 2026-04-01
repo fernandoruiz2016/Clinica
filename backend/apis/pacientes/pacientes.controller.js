@@ -1,8 +1,9 @@
-const { obtenerPacientes, obtenerPacientePorId, crearPaciente, actualizarPaciente, eliminarPaciente } = require("./pacientes.service");
+const { obtenerPacientes, obtenerPacientePorId, crearPaciente, actualizarPaciente, eliminarPaciente, obtenerPacientesFiltrados } = require("./pacientes.service");
 
 async function obtenerPacientesController(req, res) {
   try {
-    const pacientes = await obtenerPacientes();
+    const filtros = req.query; // DNI, nombre, etc.
+    const pacientes = await obtenerPacientesFiltrados(filtros);
     res.status(200).json(pacientes);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los pacientes" });
@@ -15,15 +16,15 @@ async function obtenerPacientesPorIdController(req, res) {
     const paciente = await obtenerPacientePorId(id);
 
     if (paciente.error) {
-      const { codigo, mensaje, estado } = paciente.error;
+      const { code, mensaje, estado } = paciente.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 
@@ -48,16 +49,16 @@ async function crearPacienteController(req, res) {
     const paciente = await crearPaciente(apellido, nombre, dni, telefono);
 
     if (paciente.error) {
-      const { codigo, mensaje, estado } = paciente.error;
+      const { code, mensaje, estado: estadoError } = paciente.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
-        return res.status(estado).json(mensajeError);
+      if (["001", "002"].includes(code)) {
+        return res.status(estadoError).json(mensajeError);
       }
 
       console.error(`Error inesperado creando paciente:`, paciente.error);
@@ -82,16 +83,16 @@ async function actualizarPacienteController(req, res) {
       const paciente = await actualizarPaciente(apellido, nombre, dni, telefono, id)
       
       if (paciente.error) {
-        const { codigo, mensaje, estado } = paciente.error;
+        const { code, mensaje, estado: estadoError } = paciente.error;
         const mensajeError = {
           error: {
-            codigo: codigo,
+            codigo: code,
             mensaje: mensaje,
           },
         };
 
-        if (["001", "002"].includes(codigo)) {
-          return res.status(estado).json(mensajeError);
+        if (["001", "002"].includes(code)) {
+          return res.status(estadoError).json(mensajeError);
         }
 
         console.error(`Error inesperado actualizando paciente:`, paciente.error);
@@ -115,15 +116,15 @@ async function eliminarPacienteController(req, res) {
     const paciente = await eliminarPaciente(id);
 
     if (paciente.error) {
-      const { codigo, mensaje, estado } = paciente.error;
+      const { code, mensaje, estado } = paciente.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 

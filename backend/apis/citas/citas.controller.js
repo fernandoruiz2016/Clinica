@@ -55,15 +55,15 @@ async function crearCitaController(req, res) {
 
     // 3. Manejo de errores específicos (tu lógica actual)
     if (cita.error) {
-      const { codigo, mensaje, estado: estadoError } = cita.error;
+      const { code, mensaje, estado: estadoError } = cita.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estadoError).json(mensajeError);
       }
 
@@ -98,9 +98,9 @@ async function actualizarCitaController(req, res) {
     });
 
     if (cita.error) {
-      const { codigo, mensaje, estado: estadoError } = cita.error;
+      const { code, mensaje, estado: estadoError } = cita.error;
       return res.status(estadoError).json({
-        error: { codigo, mensaje }
+        error: { codigo: code, mensaje }
       });
     }
 
@@ -125,8 +125,13 @@ async function eliminarCitaController(req, res) {
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
-        return res.status(estado).json(mensajeError);
+      if (["001", "002"].includes(cita.error.code)) {
+        return res.status(cita.error.estado).json({
+          error: {
+            codigo: cita.error.code,
+            mensaje: cita.error.mensaje,
+          },
+        });
       }
 
       console.error(`Error inesperado eliminando cita:`, cita.error);
@@ -154,7 +159,7 @@ async function obtenerCitasDelDiaController(req, res) {
 
 async function obtenerCitasFiltradasController(req, res) {
   try {
-    const { dni, fecha, estado, paciente, medico, especialidad, pago } = req.query;
+    const { dni, fecha, estado, paciente, medico, especialidad, pago, idPaciente } = req.query;
 
     const citas = await obtenerCitasFiltradasService({
       dni,
@@ -163,7 +168,8 @@ async function obtenerCitasFiltradasController(req, res) {
       paciente,
       medico, 
       especialidad, 
-      pago
+      pago,
+      idPaciente
     });
 
     if (citas.length === 0) {
