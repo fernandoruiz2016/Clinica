@@ -1,0 +1,60 @@
+<div class="form-container">
+  <h2>Registrar Nuevo Médico</h2>
+
+  <form (ngSubmit)="guardarMedico()" #medicoForm="ngForm">
+
+    <div class="row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="medico.nombre" required />
+      </div>
+
+      <div class="form-group">
+        <label>Apellido</label>
+        <input type="text" name="apellido" [(ngModel)]="medico.apellido" required />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>DNI</label>
+        <input type="text" name="dni" [(ngModel)]="medico.dni" required />
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" [(ngModel)]="medico.telefono" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Especialidad</label>
+
+      <select name="idEspecialidad" [(ngModel)]="medico.idEspecialidad" required>
+
+        <option [ngValue]="null" disabled>
+          Seleccione especialidad
+        </option>
+
+        <option *ngIf="loading" disabled>
+          Cargando especialidades...
+        </option>
+        <option *ngFor="let esp of especialidades" [ngValue]="esp.id_especialidad">
+          {{ esp.nombre }}
+        </option>
+
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-cancel" routerLink="/medicos">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-save" [disabled]="!medicoForm.valid">
+        Guardar Médico
+      </button>
+    </div>
+
+  </form>
+</div>

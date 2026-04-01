@@ -1,4 +1,4 @@
-const { obtenerMedicosRepository, obtenerMedicoPorIdRepository, crearMedicoRepository, actualizarMedicoRepository, eliminarMedicoRepository } = require("./medicos.repository")
+const { obtenerMedicosRepository, obtenerMedicoPorIdRepository, crearMedicoRepository, actualizarMedicoRepository, eliminarMedicoRepository, obtenerEspecialidadesRepository} = require("./medicos.repository")
 
 async function obtenerMedicos() {
     return await obtenerMedicosRepository();
@@ -67,11 +67,14 @@ async function eliminarMedico(id) {
 
     return medico[0];
 }
-
+async function obtenerEspecialidades() {
+  return await obtenerEspecialidadesRepository();
+}
 module.exports = {
     obtenerMedicos: obtenerMedicos,
     obtenerMedicoPorId: obtenerMedicoPorId,
     crearMedico: crearMedico,
     actualizarMedico: actualizarMedico,
     eliminarMedico: eliminarMedico,
+    obtenerEspecialidades
 };
