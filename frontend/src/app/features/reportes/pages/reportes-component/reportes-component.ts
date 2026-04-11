@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { CitaService } from '../../../../services/citas';
 import { CommonModule } from '@angular/common';
@@ -10,54 +10,79 @@ import { CommonModule } from '@angular/common';
   templateUrl: './reportes-component.html',
   styleUrl: './reportes-component.css',
 })
-export class ReportesComponent implements OnInit, AfterViewInit {
+export class ReportesComponent implements OnInit, AfterViewInit, OnDestroy {
   totalAtendidas: number = 0;
   totalCanceladas: number = 0;
   totalNoAsistidas: number = 0;
   chart: any;
+  private rawData: any[] = [];
 
-  constructor(private citaService: CitaService) {}
+  constructor(
+    private citaService: CitaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.obtenerDataDeCitas();
   }
 
   ngAfterViewInit(): void {
+    // Inicializar el gráfico después de que el view esté listo
     this.inicializarGrafico();
+    
+    // Si los datos ya llegaron, actualizar el gráfico inmediatamente
+    if (this.rawData.length > 0) {
+      this.actualizarGrafico(this.rawData);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.chart) {
+      this.chart.destroy();
+    }
   }
 
   obtenerDataDeCitas(): void {
     this.citaService.filtrarCitas({}).subscribe({
       next: (citas: any[]) => {
-        if (citas && citas.length > 0) {
-          // Filtrado de estados (normalizado a minúsculas)
-          this.totalAtendidas = citas.filter(c => 
-            c.estado?.toLowerCase() === 'atendida' || c.estadoCita?.toLowerCase() === 'atendida'
-          ).length;
-
-          this.totalCanceladas = citas.filter(c => 
-            c.estado?.toLowerCase() === 'cancelada' || c.estadoCita?.toLowerCase() === 'cancelada'
-          ).length;
-
-          this.totalNoAsistidas = citas.filter(c => 
-            c.estado?.toLowerCase() === 'programada' || c.estadoCita?.toLowerCase() === 'programada'
-          ).length;
-
-          // Actualización de gráfico si ya existe el canvas
+        this.rawData = citas || [];
+        if (this.rawData.length > 0) {
+          this.procesarEstadisticas(this.rawData);
+          
+          // Actualización de gráfico si ya existe el objeto chart
           if (this.chart) {
-            this.actualizarGrafico(citas);
-          } else {
-            setTimeout(() => this.actualizarGrafico(citas), 200);
+            this.actualizarGrafico(this.rawData);
           }
         }
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al obtener datos:', err)
     });
   }
 
+  procesarEstadisticas(citas: any[]): void {
+    // Filtrado de estados (normalizado a minúsculas)
+    this.totalAtendidas = citas.filter(c => 
+      c.estado?.toLowerCase() === 'atendida' || c.estadoCita?.toLowerCase() === 'atendida'
+    ).length;
+
+    this.totalCanceladas = citas.filter(c => 
+      c.estado?.toLowerCase() === 'cancelada' || c.estadoCita?.toLowerCase() === 'cancelada'
+    ).length;
+
+    this.totalNoAsistidas = citas.filter(c => 
+      c.estado?.toLowerCase() === 'programada' || c.estadoCita?.toLowerCase() === 'programada'
+    ).length;
+  }
+
   inicializarGrafico(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (!ctx) return;
+
+    // Destruir gráfico previo si existe para evitar duplicados en re-navegación
+    if (this.chart) {
+      this.chart.destroy();
+    }
 
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -75,7 +100,15 @@ export class ReportesComponent implements OnInit, AfterViewInit {
         responsive: true, 
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
+        scales: { 
+          y: { 
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              precision: 0
+            }
+          } 
+        }
       }
     });
   }
@@ -91,6 +124,7 @@ export class ReportesComponent implements OnInit, AfterViewInit {
       this.chart.data.labels = Object.keys(conteo);
       this.chart.data.datasets[0].data = Object.values(conteo);
       this.chart.update();
+      this.cdr.detectChanges();
     }
   }
 }

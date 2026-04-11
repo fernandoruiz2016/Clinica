@@ -1,59 +1,144 @@
 .reportes-container {
   padding: 20px;
-  background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .reportes-titulo {
+  color: #7F00E0;
   font-weight: bold;
+  font-size: 1.8rem;
   margin-bottom: 5px;
 }
 
 .reportes-subtitulo {
   color: #666;
   margin-bottom: 30px;
+  font-size: 1rem;
 }
 
 .cards-flex-row {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  gap: 20px !important;
-  justify-content: flex-start !important;
-  margin-bottom: 40px !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
+  width: 100%;
 }
 
 .reporte-card {
-  background: #fff !important;
-  border: 2px solid #333 !important;
-  border-radius: 12px !important;
-  padding: 15px 20px !important;
-  width: 220px !important;
-  min-width: 200px !important;
-  flex: 0 1 auto !important; 
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.05) !important;
+  background-color: white;
+  border-radius: 12px;
+  border: 2px solid #333;
+  padding: 15px 20px;
+  width: 260px;
+  max-width: 100%;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.card-verde { border-color: #28a745 !important; }
-.card-rojo { border-color: #dc3545 !important; }
-.card-amarillo { border-color: #ffc107 !important; }
+.card-verde {
+  border-color: #28a745 !important;
+}
+
+.card-rojo {
+  border-color: #dc3545 !important;
+}
+
+.card-amarillo {
+  border-color: #ffc107 !important;
+}
 
 .card-label {
-  display: block !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 8px !important;
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #666;
 }
 
 .card-number {
-  font-size: 2.5rem !important;
-  font-weight: 800 !important;
-  margin: 0 !important;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 0;
 }
 
+/* Modificamos el color del número para que sean consistentes pero más sobrios */
+.text-success {
+  color: #2e7d32;
+}
+
+.text-danger {
+  color: #d32f2f;
+}
+
+.text-warning {
+  color: #ef6c00;
+}
+
+/* Contenedor tipo "filter-wrapper" (Blanco con sombra) */
+.grafico-seccion {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.grafico-titulo {
+  color: #7F00E0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.grafico-wrapper-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+/* Asegurar el scroll horizontal dando un ancho fijo mayor a pantallas pequeñas */
 .chart-wrapper {
-  position: relative !important;
-  height: 350px !important;
-  width: 100% !important;
-  max-width: 800px !important;
-  margin-top: 15px !important;
+  position: relative;
+  height: 400px;
+  /* Ancho 100% por defecto, pero si la pantalla es < 600px, el ancho fijo obliga a crear scroll */
+  width: 100%;
+  min-width: 600px;
+  margin: 0 auto;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .reportes-container {
+    padding: 10px;
+  }
+
+  .card-number {
+    font-size: 2.2rem;
+  }
+
+  .chart-wrapper {
+    height: 350px;
+  }
+
+  .grafico-seccion {
+    width: 95%;
+    /* Pequeño margen en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  .reporte-card {
+    width: 100%;
+  }
 }
