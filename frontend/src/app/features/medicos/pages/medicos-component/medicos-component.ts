@@ -14,10 +14,14 @@ import { MedicoService } from '../../../../services/medicos';
 export class MedicosComponent implements OnInit {
 
   medicos: any[] = [];
+  especialidades: any[] = [];
 
   filtros = {
+    dni: '',
     nombre: '',
-    especialidad: '',
+    apellido: '',
+    telefono: '',
+    idEspecialidad: ''
   };
 
   constructor(
@@ -26,24 +30,30 @@ export class MedicosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarMedicos();
+    this.cargarEspecialidades();
+    this.onFiltrar();
   }
 
-  cargarMedicos(): void {
-    this.medicoService.obtenerMedicos().subscribe({
+  cargarEspecialidades(): void {
+    this.medicoService.obtenerEspecialidades().subscribe({
+      next: (data) => {
+        this.especialidades = data;
+      },
+      error: (err) => console.error('Error cargando especialidades', err)
+    });
+  }
+
+  onFiltrar(): void {
+    this.medicoService.obtenerMedicos(this.filtros).subscribe({
       next: (data: any) => {
         this.medicos = data && Array.isArray(data) ? [...data] : [];
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error cargando médicos', err);
+        console.error('Error filtrando médicos', err);
         this.medicos = [];
       }
     });
-  }
-
-  onFiltrar(): void {
-    this.cargarMedicos();
   }
 
   eliminar(id: number) {

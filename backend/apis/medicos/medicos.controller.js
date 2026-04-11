@@ -1,10 +1,12 @@
-const { obtenerMedicos, obtenerMedicoPorId, crearMedico, actualizarMedico, eliminarMedico, obtenerEspecialidades } = require("./medicos.service");
+const { obtenerMedicos, obtenerMedicoPorId, crearMedico, actualizarMedico, eliminarMedico, obtenerEspecialidades, obtenerMedicosFiltrados } = require("./medicos.service");
 
 async function obtenerMedicosController(req, res) {
   try {
-    const medicos = await obtenerMedicos();
+    const { dni, nombre, apellido, telefono, idEspecialidad } = req.query;
+    const medicos = await obtenerMedicosFiltrados({ dni, nombre, apellido, telefono, idEspecialidad });
     res.status(200).json(medicos);
   } catch (error) {
+    console.error("Error en obtenerMedicosController:", error);
     res.status(500).json({ error: "Error al obtener los medicos" });
   }
 }
@@ -15,15 +17,15 @@ async function obtenerMedicosPorIdController(req, res) {
     const medico = await obtenerMedicoPorId(id);
 
     if (medico.error) {
-      const { codigo, mensaje, estado } = medico.error;
+      const { code, mensaje, estado } = medico.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 
@@ -48,15 +50,15 @@ async function crearMedicoController(req, res) {
     const medico = await crearMedico(apellido, nombre, dni, telefono, idEspecialidad);
 
     if (medico.error) {
-      const { codigo, mensaje, estado } = medico.error;
+      const { code, mensaje, estado } = medico.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 
@@ -82,15 +84,15 @@ async function actualizarMedicoController(req, res) {
     const medico = await actualizarMedico(apellido, nombre, dni, telefono, idEspecialidad, id)
 
     if (medico.error) {
-      const { codigo, mensaje, estado } = medico.error;
+      const { code, mensaje, estado } = medico.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 
@@ -115,15 +117,15 @@ async function eliminarMedicoController(req, res) {
     const medico = await eliminarMedico(id);
 
     if (medico.error) {
-      const { codigo, mensaje, estado } = medico.error;
+      const { code, mensaje, estado } = medico.error;
       const mensajeError = {
         error: {
-          codigo: codigo,
+          codigo: code,
           mensaje: mensaje,
         },
       };
 
-      if (["001", "002"].includes(codigo)) {
+      if (["001", "002"].includes(code)) {
         return res.status(estado).json(mensajeError);
       }
 

@@ -62,11 +62,57 @@ async function obtenerEspecialidadesRepository() {
     return resultadoDeConsulta.rows;
 }
 
+// ✅ FUNCIÓN DE FILTRADO
+async function obtenerMedicosFiltradosRepository(filtros = {}) {
+    const { dni, nombre, apellido, telefono, idEspecialidad } = filtros;
+    let query = `
+        SELECT 
+            m.id_medico,
+            m.nombre,
+            m.apellido,
+            m.dni,
+            m.telefono,
+            e.nombre AS especialidad
+        FROM medico m
+        LEFT JOIN especialidad e 
+            ON m.id_especialidad = e.id_especialidad
+        WHERE 1=1
+    `;
+    const values = [];
+    let count = 1;
+
+    if (dni) {
+        query += ` AND m.dni LIKE $${count++}`;
+        values.push(`${dni}%`);
+    }
+    if (nombre) {
+        query += ` AND m.nombre ILIKE $${count++}`;
+        values.push(`%${nombre}%`);
+    }
+    if (apellido) {
+        query += ` AND m.apellido ILIKE $${count++}`;
+        values.push(`%${apellido}%`);
+    }
+    if (telefono) {
+        query += ` AND m.telefono LIKE $${count++}`;
+        values.push(`%${telefono}%`);
+    }
+    if (idEspecialidad && idEspecialidad !== 'null' && idEspecialidad !== '') {
+        query += ` AND m.id_especialidad = $${count++}`;
+        values.push(idEspecialidad);
+    }
+
+    query += " ORDER BY m.apellido ASC, m.nombre ASC";
+    const resultadoDeConsulta = await db.query(query, values);
+    return resultadoDeConsulta.rows;
+}
+
 module.exports = {
     obtenerMedicosRepository,
     obtenerMedicoPorIdRepository,
     crearMedicoRepository,
     actualizarMedicoRepository,
     eliminarMedicoRepository,
-    obtenerEspecialidadesRepository
+    obtenerEspecialidadesRepository,
+    obtenerMedicosFiltradosRepository
 };

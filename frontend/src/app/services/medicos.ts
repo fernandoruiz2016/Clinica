@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -20,9 +20,15 @@ export class MedicoService {
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Obtener todos
-  obtenerMedicos(): Observable<Medico[]> {
-    return this.http.get<Medico[]>(this.apiUrl);
+  // ✅ Obtener todos con filtros
+  obtenerMedicos(filtros: any = {}): Observable<Medico[]> {
+    let params = new HttpParams();
+    Object.keys(filtros).forEach(key => {
+      if (filtros[key]) {
+        params = params.set(key, filtros[key]);
+      }
+    });
+    return this.http.get<Medico[]>(this.apiUrl, { params });
   }
 
   // 🔥 AGREGAR ESTE
