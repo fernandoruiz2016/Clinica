@@ -1,1 +1,28 @@
-<p>reportes-component works!</p>
+<div class="reportes-container">
+  <h2 class="reportes-titulo">Reporte mensual</h2>
+  <p class="reportes-subtitulo">Resumen de citas</p>
+
+  <div class="cards-flex-row">
+    <div class="reporte-card card-verde">
+      <span class="card-label">Citas atendidas</span>
+      <h2 class="card-number text-success">{{ totalAtendidas }}</h2>
+    </div>
+
+    <div class="reporte-card card-rojo">
+      <span class="card-label">Citas canceladas</span>
+      <h2 class="card-number text-danger">{{ totalCanceladas }}</h2>
+    </div>
+
+    <div class="reporte-card card-amarillo">
+      <span class="card-label">No asistidas (Programadas)</span>
+      <h2 class="card-number text-warning">{{ totalNoAsistidas }}</h2>
+    </div>
+  </div>
+
+  <div class="grafico-seccion">
+    <p class="grafico-titulo">Citas por Especialidad</p>
+    <div class="chart-wrapper">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</div>

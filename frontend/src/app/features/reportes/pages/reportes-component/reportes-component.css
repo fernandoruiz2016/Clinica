@@ -1,0 +1,59 @@
+.reportes-container {
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.reportes-titulo {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.reportes-subtitulo {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.cards-flex-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  justify-content: flex-start !important;
+  margin-bottom: 40px !important;
+}
+
+.reporte-card {
+  background: #fff !important;
+  border: 2px solid #333 !important;
+  border-radius: 12px !important;
+  padding: 15px 20px !important;
+  width: 220px !important;
+  min-width: 200px !important;
+  flex: 0 1 auto !important; 
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.05) !important;
+}
+
+.card-verde { border-color: #28a745 !important; }
+.card-rojo { border-color: #dc3545 !important; }
+.card-amarillo { border-color: #ffc107 !important; }
+
+.card-label {
+  display: block !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.card-number {
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+}
+
+.chart-wrapper {
+  position: relative !important;
+  height: 350px !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  margin-top: 15px !important;
+}
